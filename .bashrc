@@ -26,7 +26,7 @@ if [ -n "${I3_BUILD}" ]; then
   export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
   I3PROMPT="[${RED}${I3_VERSION}${NC}]"
   alias grep="grep --exclude-dir='.svn' --exclude=*.pyc --exclude=*~"
-  alias make="make -C${I3_BUILD} -j32"
+  alias makec="make -C${I3_BUILD}"
   alias ninja="ninja -C${I3_BUILD}"
   alias wipe_cache="rm -v ${I3_BUILD}/CMakeCache.txt && i3cmake"
 else

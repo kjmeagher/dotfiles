@@ -1,0 +1,9 @@
+" Dark mode settings
+colors koehler
+highlight LineNr guifg=DarkGray
+highlight Search guibg='Purple' guifg=#FFFFFF
+highlight String guifg=#FF5733
+highlight Visual guibg=#000000
+highlight Pmenu guifg=#000000 guibg=#808080
+set guifont=Hack\ 12
+
