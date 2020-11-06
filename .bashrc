@@ -1,13 +1,30 @@
+case `uname -s` in 
+  Linux*)  
+    color='--color=auto'
+    shopt -s direxpand
+    ;;
+  Darwin*) 
+    alias ldd="otool -L"
+    color='-G'
+    ;;
+  *)       
+    echo Unknown Platform
+    ;;
+esac
+
+case ${HOSTNAME} in 
+    (silver)
+        source ${HOME}/py38/bin/activate
+        ;;
+    (*)
+        ;;
+esac
+
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
-alias ls='ls -Fh --color=auto'
+alias ls="ls -Fh ${color}"
 alias ll="ls -ltr"
 alias grep='grep --color=auto --exclude-dir=.svn'
 alias vi='vim'
-
-if [[ ${HOSTNAME} =~ ^cobalt.* ]]; then
-    alias emacs=emacs-24.3-nox
-    shopt -s direxpand
-fi
 
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
@@ -27,8 +44,6 @@ if [ -n "${I3_BUILD}" ]; then
   I3PROMPT="[${RED}${I3_VERSION}${NC}]"
   alias grep="grep --exclude-dir='.svn' --exclude=*.pyc --exclude=*~"
   alias makec="make -C${I3_BUILD}"
-  alias ninja="ninja -C${I3_BUILD}"
-  alias wipe_cache="rm -v ${I3_BUILD}/CMakeCache.txt && i3cmake"
 else
   I3PROMPT="-${CYAN}\u${NC}@"
 fi
