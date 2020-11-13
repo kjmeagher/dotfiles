@@ -2,6 +2,7 @@ export EDITOR="vim"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export LC_ALL=en_US.UTF-8
+export PYTHONPATH=${HOME}/.local/lib/python
 export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 
