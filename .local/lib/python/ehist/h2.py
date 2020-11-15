@@ -1,5 +1,4 @@
 import numpy as np
-from colors import color
 
 class h2: 
     def __init__(self, x, y, bins = (60,50), range = None, log = (False,False),
@@ -49,7 +48,10 @@ class h2:
             self.yedges  = 10**self.yedges
 
     def plot(self,logz=False,norm = None,zrange = None, **kwargs):
-        z = ma.masked_where(self.z==0,self.z)
+        from matplotlib import colors
+        import pylab as plt
+        
+        z = np.ma.masked_where(self.z==0,self.z)
         if norm is None:
             pass
         elif norm=='x':
@@ -69,9 +71,7 @@ class h2:
             norm =colors.Normalize(vmin=zrange[0], vmax=zrange[1])
             
         plt.pcolormesh(self.xedges,self.yedges,z.T,norm = norm)
-
         plt.colorbar()
-        
         plt.xlim(self.xedges[0],self.xedges[-1])
         plt.ylim(self.yedges[0],self.yedges[-1])
         
@@ -79,6 +79,11 @@ class h2:
             plt.xscale('log')
         if self.logy:
             plt.yscale('log')
+
+    def plot_text(self):
+        from .ansi_cmap import ansi_cmap
+        s = ansi_cmap(self.xedges,self.yedges,self.z.T)
+        return s
 
     def __str__(self):
         return "<{} bins=({},{}) range=[[{:0.2f},{:0.2f}],[{:0.2f},{:0.2f}]] entries={}>".format(

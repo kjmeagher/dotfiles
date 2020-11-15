@@ -130,7 +130,7 @@ class HorizontalPlot:
     def get_plot(self,y,min_y,max_y):
 
         assert (self.rows==len(y))
-        bar_width = self.width - sum(m+len(pre)+len(post)+:1 for _,m,_,pre,post in self.cols)
+        bar_width = self.width - sum(m+len(pre)+len(post)+1 for _,m,_,pre,post in self.cols)
         line = self.width*line_char
         
         out = line+'\n'

@@ -65,7 +65,7 @@ class hc:
             p.add_column(self.A,t=float if self.weighted or self.scaled else int)
         if show_err:
             p.add_column(self.size*[pm_char])
-            p.add_column(self.Aerr,t=float):w
+            p.add_column(self.Aerr,t=float)
         return p.get_plot(bary,min_y,max_y)
         
 
