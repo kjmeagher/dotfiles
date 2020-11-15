@@ -3,3 +3,5 @@
 	name = Kevin Meagher
 [credential]
 	helper = store
+[pull]
+	rebase = false
