@@ -1,3 +1,3 @@
 from .hc import hc
-from .h1 import h1
+from .hist1d import Hist1D as h1
 from .h2 import h2

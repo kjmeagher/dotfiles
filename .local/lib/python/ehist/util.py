@@ -25,79 +25,37 @@ def get_name(obj):
     else:
         return str(obj)
 
-def auto_int_bins(data, bins=None, range=None):
-    if bins is None:
-        bins=64
-
-    if range is None:
-        range = [ int(min(data)),
-                  int(max(data))+1]
-
-    if np.isscalar(bins):
-        binsize=int(np.ceil((range[1]-range[0])/bins))
-
-        #first try to align the bins 
-        l1=binsize*int(range[0]/binsize)
-        u1=binsize*int(np.ceil(range[1]/binsize))
-        b1=np.arange(l1,u1+1,binsize)
-
-        #if that crates too many bins start at the first bin instead
-        if len(b1)>bins+1:    
-            l2=int(range[0])
-            u2=l2+bins*binsize
-            b1=np.arange(l2,u2+1,binsize)
-
-        assert(len(b1)<=bins+1)
-        bins=b1
-
-    assert all(issubclass(type(b),np.integer) for b in bins)
-    return bins
-
-def auto_axis(data):
-  if hasattr(data,'dtype'):
-    if np.issubdtype(data.dtype.type,np.integer):
-      htype=int
-    elif issubclass(data.dtype.type,np.floating):      
-      htype=float
-    else:
-      htype = object
-  else:
-    if all(np.issubdtype(type(d),np.integer) for d in data):
-      htype=int
-    elif all(np.issubdtype(type(d),np.floating) for d in data):
-      htype=float
-    else:
-      htype=object
-  return htype
-
 block_chars = u' ▏▎▍▌▋▊▉█'
 line_char = u'━'
 arrow_char = u'→'
 pm_char = '±'
 
+vertical_blocks= u' ▁▂▃▄▅▆▇█'
+vertical_line  = u'┃'
+
 def make_bar(y,min_y,max_y,width,blocks):
-  if (max_y<=min_y):
-    raise ValueError()
-  if len(blocks)<2:
-    raise ValueError()
-  empty_block=blocks[0]    
-  frac_blocks=blocks[1:-1]
-  full_block=blocks[-1]
+    if (max_y<=min_y):
+        raise ValueError()
+    if len(blocks)<2:
+        raise ValueError()
+    empty_block=blocks[0]    
+    frac_blocks=blocks[1:-1]
+    full_block=blocks[-1]
   
-  if y<=min_y:
-    bar=width*empty_block
-  elif y>=max_y:
-    bar=width*full_block
-  else:        
-    mul=len(frac_blocks)+1
-    xx= round(float(y-min_y)*width*mul/(max_y-min_y))
-    mod = int(xx%mul)
-    bar = int(xx/mul)*full_block        
-    if mod and frac_blocks:
-      bar+=frac_blocks[mod-1]
-    bar+=(width-len(bar))*empty_block
-  assert len(bar)==width            
-  return bar
+    if y<=min_y:
+        bar=width*empty_block
+    elif y>=max_y:
+        bar=width*full_block
+    else:        
+        mul=len(frac_blocks)+1
+        xx= round(float(y-min_y)*width*mul/(max_y-min_y))
+        mod = int(xx%mul)
+        bar = int(xx/mul)*full_block        
+        if mod and frac_blocks:
+            bar+=frac_blocks[mod-1]
+        bar+=(width-len(bar))*empty_block
+    assert len(bar)==width            
+    return bar
 
 class HorizontalPlot:
     def __init__(self,width=80):
@@ -112,7 +70,10 @@ class HorizontalPlot:
             assert(self.rows==len(col))
 
         if t in [float]:
-            if np.log10(max(col)) > 5 or np.log10(min(col)) < -2:
+            a = np.log10(max(np.abs(col)))>5
+            b = min(np.abs(col))!=0
+            c = np.log10(min(np.abs(col[col!=0]))) < -2
+            if a or (b and c):
                 fmt = "{:7.2e}"
             else:
                 fmt = "{:0.2f}"
@@ -141,4 +102,26 @@ class HorizontalPlot:
             out +='\n'
         out += line+'\n'            
         return out
+
+
+class VerticalPlot:
+    def __init__(self,width=80,height=25):
+        #self.cols=[]
+        #self.rows=None
+        self.width=width
+        self.height=height
+
+    def get_plot(self,y,min_y,max_y):
+
+        rep = max(1,self.width//len(y))
+        bars=[]
+        for yy in y:
+            bars+=rep*[make_bar(yy,min_y,max_y,self.height,vertical_blocks)[::-1]]
+        h=vertical_line
+        e=vertical_line+'\n'
+        out = ''.join(''.join(a)+'\n' for a in zip(*bars))
+        return out
+
+
+
 
