@@ -1,4 +1,4 @@
-export EDITOR="vim"
+export EDITOR="emacs"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PYTHONPATH=${HOME}/.local/lib/python
@@ -21,9 +21,6 @@ case ${HOSTNAME} in
           done
         fi
       fi
-      if [ -f ~/.bashrc ]; then
-        source ~/.bashrc
-      fi
       ;;
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
@@ -40,8 +37,6 @@ case ${HOSTNAME} in
     ;;
 esac
 
-
-
-
-
-
+if [ -f ~/.bashrc ]; then
+    source ~/.bashrc
+fi

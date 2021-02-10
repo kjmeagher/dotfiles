@@ -29,6 +29,13 @@ alias vi='vim'
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
 fi
+
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+fi
   
 RED='\[\033[31m\]'
 BRED="\[\033[1;31m\]"
