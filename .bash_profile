@@ -31,6 +31,7 @@ case ${HOSTNAME} in
   black)
     #export SROOT=/usr/local
     export I3_TESTDATA=${HOME}/s1/icecube/i3-test-data/trunk
+    export TERMINAL=/usr/bin/termite
     ;;
   *)
     echo "Unknown hostname ${HOSTNAME}"

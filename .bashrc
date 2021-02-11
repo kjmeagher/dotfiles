@@ -24,19 +24,12 @@ alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 alias ls="ls -Fh ${color}"
 alias ll="ls -ltr"
 alias grep='grep --color=auto --exclude-dir=.svn'
-alias vi='vim'
+alias emacs='emacs -nw'
 
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
 fi
 
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
-  
 RED='\[\033[31m\]'
 BRED="\[\033[1;31m\]"
 YELLOW='\[\033[33;1m\]'
