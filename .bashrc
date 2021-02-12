@@ -41,10 +41,12 @@ NC='\[\033[m\]'
 
 if [ -n "${I3_BUILD}" ]; then
   export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
+  I3TITLE="[${I3_VERSION}]"
   I3PROMPT="[${RED}${I3_VERSION}${NC}]"
   alias grep="grep --exclude-dir='.svn' --exclude=*.pyc --exclude=*~"
   alias makec="make -C${I3_BUILD}"
 else
+  I3TITLE=":"
   I3PROMPT="-${CYAN}\u${NC}@"
 fi
 
@@ -61,6 +63,7 @@ prompt_command () {
   else
     PYPROMPT="${BLUE}${PYTHON_VERSION:0:1}${PYTHON_VERSION:2:1}${NC}"
   fi
+  echo -en "\033]0;${USER}@${HOSTNAME} ${I3TITLE} ${PWD}\a"
   export PS1="${ERRPROMPT}:${PYPROMPT}${I3PROMPT}${GREEN}\h${NC}:${YELLOW}\w${NC}$ "
 }
 PROMPT_COMMAND=prompt_command
