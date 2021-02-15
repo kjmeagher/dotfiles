@@ -1,4 +1,4 @@
-export EDITOR="emacs"
+export EDITOR="emacs -nw"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PYTHONPATH=${HOME}/.local/lib/python
