@@ -20,6 +20,7 @@ case ${HOSTNAME} in
         ;;
 esac
 
+stty -ixon
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 alias ls="ls -Fh ${color}"
 alias ll="ls -ltr"
