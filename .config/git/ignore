@@ -1,0 +1,9 @@
+*~
+\#*#
+
+release/
+debug/
+build/
+
+MuonGun/resources/tables/*_[0-9]*
+

@@ -14,7 +14,7 @@ esac
 
 case ${HOSTNAME} in 
     (silver)
-        source ${HOME}/py38/bin/activate
+        source ${HOME}/py3/bin/activate
         ;;
     (*)
         ;;

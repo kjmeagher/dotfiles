@@ -7,7 +7,8 @@ export SVN=http://code.icecube.wisc.edu/svn
 
 case ${HOSTNAME} in 
     silver)
-      export I3_TESTDATA=/Users/kmeagher/icecube/testdata/trunk/
+      export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
+      export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
       export HOMEBREW_NO_INSTALL_CLEANUP=1
