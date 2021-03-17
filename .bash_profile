@@ -8,7 +8,6 @@ export SVN=http://code.icecube.wisc.edu/svn
 case ${HOSTNAME} in 
     silver)
       export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
-      export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
       export HOMEBREW_NO_INSTALL_CLEANUP=1
@@ -25,13 +24,11 @@ case ${HOSTNAME} in
       ;;
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
-    export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export TMPDIR=/scratch/kmeagher/scratch
     export _CONDOR_SCRATCH_DIR=$TMPDIR
     ;;
   black)
-    #export SROOT=/usr/local
-    export I3_TESTDATA=${HOME}/s1/icecube/i3-test-data/trunk
+    export I3_DATA=${HOME}/s1/icecube/data
     export TERMINAL=/usr/bin/termite
     ;;
   *)

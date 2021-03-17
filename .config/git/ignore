@@ -5,5 +5,8 @@ release/
 debug/
 build/
 
-MuonGun/resources/tables/*_[0-9]*
+/MuonGun/resources/tables/*_[0-9]*
+/clsim/resources/safeprimes_base32.gz
 
+*.hdf5
+*.i3.zst
