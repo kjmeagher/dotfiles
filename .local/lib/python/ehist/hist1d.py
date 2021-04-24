@@ -88,10 +88,12 @@ class Hist1D:
       raise ValueError("Unrecognized value for `show`: '{}'".format(show))
     return y,yerr
 
-  def plot(self,s='steps',scale = 1,logy=None,ymin=None,show='Area',fmt=None,**kwargs):
+  def plot(self, ax=None, s='steps',scale = 1,logy=None,ymin=None,show='Area',fmt=None,**kwargs):
         import pylab as plt
-        from matplotlib import colors   
-        ax = plt.gca()
+        from matplotlib import colors
+
+        if ax is None:
+          ax = plt.gca()
 
         y,yerr= self._get_hist(show)
         y = scale*y
@@ -305,7 +307,6 @@ class Hist1D:
         
   def brazil_plot(self, ax=None,logy=False,ymin=0.1,residule=False,
                   alpha=(1,2),colors=('#00CC00','#DDDD00')):
-    
         if ax is None:
             ax = plt.gca()
     
