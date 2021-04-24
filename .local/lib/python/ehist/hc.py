@@ -21,7 +21,7 @@ class hc:
         self.x=np.arange(self.size)
 
         if names is None:
-            self.names = None
+            self.names = [str(xx) for xx in self.vals]
         elif callable(names):
             self.names = [ get_name(names(xx)) for xx in self.vals]
         elif hasattr(names,'get'):
@@ -36,11 +36,11 @@ class hc:
                  "label": self.label}
         args.update(kwargs)
         if s == 'bars':
-            plt.bar(self.x,self.y,tick_label=self.names,**args)
+            plt.bar(self.x,self.A,tick_label=self.names,**args)
       
         elif s=='steps':
-            x =np.arange(len(self.y)+1)-0.5
-            plt.step(np.r_[x,x[-1]], np.r_[0,self.y,0], where='pre',**args)
+            x =np.arange(len(self.A)+1)-0.5
+            plt.step(np.r_[x,x[-1]], np.r_[0,self.A,0], where='pre',**args)
             ax = plt.gca()
             ax.set_xticks(self.x)
             ax.set_xticklabels(self.names)      
