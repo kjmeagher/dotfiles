@@ -1,9 +1,10 @@
-export EDITOR="emacs -nw"
+export EDITOR="micro"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PYTHONPATH=${HOME}/.local/lib/python
 export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
+export HISTSIZE=100000
 
 case ${HOSTNAME} in 
     silver)
@@ -29,7 +30,10 @@ case ${HOSTNAME} in
     ;;
   black)
     export I3_DATA=${HOME}/s1/icecube/data
+    export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export TERMINAL=/usr/bin/termite
+    export LD_LIBRARY_PATH=/usr/local/lib
+    export PYTHONPATH=/usr/local/lib/python3.9/site-packages
     ;;
   *)
     echo "Unknown hostname ${HOSTNAME}"
