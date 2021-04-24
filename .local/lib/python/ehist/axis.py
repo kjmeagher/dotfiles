@@ -3,7 +3,8 @@ import math as m
 from .bayesian_blocks import bayesian_blocks, freedman_bin_width, scott_bin_width, knuth_bin_width
 
 class IntAxis:
-    def bin_spacing(self,bins,range):
+    def bin_spacing(self, points, bins):
+        range = [np.min(points),np.max(points)]
         assert np.issubdtype(range[0], np.integer)
         assert np.issubdtype(range[1], np.integer)
         range[1]+=1
@@ -59,7 +60,8 @@ class IntAxis:
 
 
 class LogIntAxis:
-    def bin_spacing(self,bins,range):
+    def bin_spacing(self,points,bins):
+        range = [np.min(points),np.max(points)]
         assert np.issubdtype(range[0], np.integer)
         assert np.issubdtype(range[1], np.integer)
         range[1]+=1
@@ -93,7 +95,8 @@ class LogIntAxis:
         return np.arange(self.bins[0],self.bins[-1])
 
 class LinearAxis:
-    def bin_spacing(self,bins,range):
+    def bin_spacing(self,points,bins):
+        range = [np.min(points),np.max(points)]
         self.bins = np.linspace(range[0],range[1],bins+1)
 
     def finish(self):
@@ -110,7 +113,8 @@ class LinearAxis:
             return np.linspace(self.bins[0],self.bins[-1],100)
 
 class LogAxis:
-    def bin_spacing(self,bins,range):
+    def bin_spacing(self,points,bins):
+        range = [np.min(points[points>0]),np.max(points)]
         self.bins = np.geomspace(range[0],range[1],bins+1)
 
     def finish(self):
@@ -129,7 +133,8 @@ class LogAxis:
             return np.geomspace(self.bins[0],self.bins[-1],100)
 
 class ZenithAxis:
-    def bin_spacing(self,bins,range):
+    def bin_spacing(self,points,bins):
+        range = [np.min(points),np.max(points)]
         #coerse the values to common edges
         if range[0] < .1:
             range[0]= 0
@@ -206,9 +211,7 @@ def AutoAxis(points,bins,range,t):
         bins = 64
 
     if np.isscalar(bins):
-        if range is None:
-            range = [np.min(points),np.max(points)]
-        ax.bin_spacing(bins,np.array(range))
+        ax.bin_spacing(points,bins)
     else:
         ax.bins = bins
 
