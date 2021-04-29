@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+import argparse, tabulate
+import pandas as pd
+
+parser = argparse.ArgumentParser()
+parser.add_argument('filename')
+parser.add_argument('table',nargs='?')
+parser.add_argument('columns',nargs='*')
+args = parser.parse_args()
+
+print(args)
+
+f = pd.HDFStore(args.filename)
+
+if args.table is None:
+    x = []
+    for t in dir(f.root):
+        if t.startswith('_'):
+            continue
+        #print(t,len(getattr(f.root,t)))
+        x.append((t,len(getattr(f.root,t))))
+
+    print(tabulate.tabulate(x))
+
+elif not args.columns:
+
+    print(args.table)
+    print(f[args.table])
+
+else:
+    print(f[args.table][args.columns])
+
+f.close()
