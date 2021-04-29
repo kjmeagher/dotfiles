@@ -33,7 +33,7 @@ case ${HOSTNAME} in
     export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export TERMINAL=/usr/bin/termite
     export LD_LIBRARY_PATH=/usr/local/lib
-    export PYTHONPATH=/usr/local/lib/python3.9/site-packages
+    export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages
     ;;
   *)
     echo "Unknown hostname ${HOSTNAME}"
