@@ -1,6 +1,7 @@
 *~
 \#*#
 
+.vscode/
 release/
 debug/
 build/

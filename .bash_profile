@@ -8,6 +8,7 @@ export HISTSIZE=100000
 
 case ${HOSTNAME} in 
     silver)
+      export EDITOR="/usr/local/bin/micro"
       export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
