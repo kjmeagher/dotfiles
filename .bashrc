@@ -1,3 +1,7 @@
+if [[ -z "${EDITOR}" ]]; then
+  . ~/.bash_profile
+fi
+
 case `uname -s` in 
   Linux*)  
     color='--color=auto'

@@ -88,7 +88,7 @@ class Hist1D:
       raise ValueError("Unrecognized value for `show`: '{}'".format(show))
     return y,yerr
 
-  def plot(self, ax=None, s='steps',scale = 1,logy=None,ymin=None,show='Area',fmt=None,**kwargs):
+  def plot(self,  s='steps',scale = 1,logy=None,ymin=None,show='Area',fmt=None,ax=None,**kwargs):
         import pylab as plt
         from matplotlib import colors
 

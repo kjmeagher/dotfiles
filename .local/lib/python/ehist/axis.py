@@ -3,10 +3,11 @@ import math as m
 from .bayesian_blocks import bayesian_blocks, freedman_bin_width, scott_bin_width, knuth_bin_width
 
 class IntAxis:
-    def bin_spacing(self, points, bins):
-        range = [np.min(points),np.max(points)]
-        assert np.issubdtype(range[0], np.integer)
-        assert np.issubdtype(range[1], np.integer)
+    def bin_spacing(self, points, bins,range):
+        if range is None:
+            range = [int(np.min(points)),int(np.max(points))]
+        assert np.issubdtype(type(range[0]), np.integer)
+        assert np.issubdtype(type(range[1]), np.integer)
         range[1]+=1
         binsize=int(np.ceil((range[1]-range[0])/bins))
 
@@ -60,12 +61,16 @@ class IntAxis:
 
 
 class LogIntAxis:
-    def bin_spacing(self,points,bins):
-        range = [np.min(points),np.max(points)]
-        assert np.issubdtype(range[0], np.integer)
-        assert np.issubdtype(range[1], np.integer)
+    def bin_spacing(self,points,bins,range):
+
+        if range is None:
+            range = [int(np.min(points)),int(np.max(points))]
+
+        print(range)
+        assert np.issubdtype(type(range[0]), np.integer)
+        assert np.issubdtype(type(range[1]), np.integer)
         range[1]+=1
-        b0,counts = np.unique( (np.geomspace(range[0],range[1],bins)+.5).astype(int),return_counts=True)
+        b0,counts = np.unique( (np.geomspace(max(range[0],1),range[1],bins)+.5).astype(int),return_counts=True)
         repeated_bins = np.argwhere(counts>=2)
         if repeated_bins.size:
             last_repeater = b0[np.argwhere(counts>=2)[-1][0]]
@@ -95,8 +100,9 @@ class LogIntAxis:
         return np.arange(self.bins[0],self.bins[-1])
 
 class LinearAxis:
-    def bin_spacing(self,points,bins):
-        range = [np.min(points),np.max(points)]
+    def bin_spacing(self,points,bins,range):
+        if range is None:
+            range = [np.min(points),np.max(points)]
         self.bins = np.linspace(range[0],range[1],bins+1)
 
     def finish(self):
@@ -113,8 +119,9 @@ class LinearAxis:
             return np.linspace(self.bins[0],self.bins[-1],100)
 
 class LogAxis:
-    def bin_spacing(self,points,bins):
-        range = [np.min(points[points>0]),np.max(points)]
+    def bin_spacing(self,points,bins,range):
+        if range is None:
+            range = [np.min(points[points>0]),np.max(points)]
         self.bins = np.geomspace(range[0],range[1],bins+1)
 
     def finish(self):
@@ -133,8 +140,9 @@ class LogAxis:
             return np.geomspace(self.bins[0],self.bins[-1],100)
 
 class ZenithAxis:
-    def bin_spacing(self,points,bins):
-        range = [np.min(points),np.max(points)]
+    def bin_spacing(self,points,bins,range):
+        if range is None:
+            range = [np.min(points),np.max(points)]
         #coerse the values to common edges
         if range[0] < .1:
             range[0]= 0
@@ -211,7 +219,7 @@ def AutoAxis(points,bins,range,t):
         bins = 64
 
     if np.isscalar(bins):
-        ax.bin_spacing(points,bins)
+        ax.bin_spacing(points,bins,range)
     else:
         ax.bins = bins
 
