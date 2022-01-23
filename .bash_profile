@@ -14,7 +14,7 @@ fi
 
 case ${HOSTNAME} in 
     silver)
-      export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
+      export I3_TESTDATA=/cvmfs/icecube.opensciencegrid.org/data/i3-test-data-svn/trunk/
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
       export HOMEBREW_NO_INSTALL_CLEANUP=1
