@@ -1,14 +1,19 @@
-export EDITOR="micro"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PYTHONPATH=${HOME}/.local/lib/python
 export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000
+export LESS='-R'
+
+if type micro > /dev/null; then
+  export EDITOR="micro"
+else
+  export EDITOR="nano"
+fi
 
 case ${HOSTNAME} in 
     silver)
-      export EDITOR="/usr/local/bin/micro"
       export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
@@ -34,14 +39,12 @@ case ${HOSTNAME} in
     export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export TERMINAL=/usr/bin/kitty
     export LD_LIBRARY_PATH=/usr/local/lib
-    export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.9/site-packages
     export G4LEVELGAMMADATA=/usr/share/geant4-levelgammadata/PhotonEvaporation5.7
     export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.3
     export G4LEDATA=/usr/share/geant4-ledata/G4EMLOW7.13/
     export G4PARTICLEXSDATA=/usr/share/geant4-particlexsdata/G4PARTICLEXS3.1
     ;;
   *)
-    echo "Unknown hostname ${HOSTNAME}"
     ;;
 esac
 

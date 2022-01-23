@@ -16,20 +16,29 @@ case `uname -s` in
     ;;
 esac
 
+alias ipython='python -m IPython'
+alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
+
+if type exa > /dev/null; then
+  alias ll='exa -ls modified --time-style=iso'
+  alias ls='exa'
+else
+  alias ls="ls -Fh ${color}"
+  alias ll="ls -ltr"
+fi
+
 case ${HOSTNAME} in 
     (silver)
-        source ${HOME}/py3/bin/activate
-        ;;
+      stty -ixon
+      source ${HOME}/py3/bin/activate
+      ;;
+    (black)
+      stty -ixon
+    	alias hd=hexyl
+      ;;
     (*)
-        ;;
+      ;;
 esac
-
-stty -ixon
-alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
-alias ls="ls -Fh ${color}"
-alias ll="ls -ltr"
-alias grep='grep --color=auto --exclude-dir=.svn'
-alias emacs='emacs -nw'
 
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
@@ -72,3 +81,8 @@ prompt_command () {
   export PS1="${ERRPROMPT}:${PYPROMPT}${I3PROMPT}${GREEN}\h${NC}:${YELLOW}\w${NC}$ "
 }
 PROMPT_COMMAND=prompt_command
+
+
+# BEGIN_KITTY_SHELL_INTEGRATION
+if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
+# END_KITTY_SHELL_INTEGRATION
