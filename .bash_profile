@@ -1,6 +1,6 @@
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export PYTHONPATH=${HOME}/.local/lib/python
+export PYTHONPATH=${HOME}/.local/lib/python:$PYTHONPATH
 export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000

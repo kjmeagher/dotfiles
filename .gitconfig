@@ -5,7 +5,16 @@
 	helper = store
 [pull]
 	rebase = true
+[push]
+	default = simple
 [remote "origin"]
 	prune = true
 [init]
 	defaultBranch = main
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = true
+	pager = true
