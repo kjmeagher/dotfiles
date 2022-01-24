@@ -19,7 +19,7 @@ esac
 alias ipython='python -m IPython'
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 
-if type exa > /dev/null; then
+if type exa &> /dev/null; then
   alias ll='exa -ls modified --time-style=iso'
   alias ls='exa'
 else

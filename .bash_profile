@@ -6,7 +6,7 @@ export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000
 export LESS='-R'
 
-if type micro > /dev/null; then
+if type micro &> /dev/null; then
   export EDITOR="micro"
 else
   export EDITOR="nano"
