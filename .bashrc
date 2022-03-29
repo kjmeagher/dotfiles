@@ -30,7 +30,8 @@ fi
 case ${HOSTNAME} in 
     (silver)
       stty -ixon
-      source ${HOME}/py3/bin/activate
+      #source ${HOME}/py3/bin/activate
+      alias python=python3
       ;;
     (black)
       stty -ixon
