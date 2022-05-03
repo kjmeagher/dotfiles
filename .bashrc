@@ -72,11 +72,11 @@ prompt_command () {
   else
     ERRPROMPT="${BRED}${ERR}${NC}"
   fi
-  PYTHON_VERSION=`python -V 2> /dev/stdout| awk '{print $2}'`
-  if [ "${PYTHON_VERSION:0:1}" -eq "2" ]; then
-    PYPROMPT="${BPURPLE}${PYTHON_VERSION:0:1}${PYTHON_VERSION:2:1}${NC}"
+  PYTHON_VERSION=`python -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))"`
+  if [ "${PYTHON_VERSION}" -lt "300" ]; then
+    PYPROMPT="${BPURPLE}${PYTHON_VERSION}${NC}"
   else
-    PYPROMPT="${BLUE}${PYTHON_VERSION:0:1}${PYTHON_VERSION:2:1}${NC}"
+    PYPROMPT="${BLUE}${PYTHON_VERSION}${NC}"
   fi
   echo -en "\033]0;$(hostname -s) ${I3TITLE} ${PWD}\a"  
   export PS1="${ERRPROMPT}:${PYPROMPT}${I3PROMPT}${GREEN}\h${NC}:${YELLOW}\w${NC}$ "

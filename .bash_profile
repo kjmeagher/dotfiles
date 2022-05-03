@@ -5,6 +5,7 @@ export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000
 export LESS='-R'
+export BETTER_EXCEPTIONS=1
 
 if type micro &> /dev/null; then
   export EDITOR="micro"
@@ -43,6 +44,9 @@ case ${HOSTNAME} in
     export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.3
     export G4LEDATA=/usr/share/geant4-ledata/G4EMLOW7.13/
     export G4PARTICLEXSDATA=/usr/share/geant4-particlexsdata/G4PARTICLEXS3.1
+    if [ -d "/opt/cuda/bin" ]; then
+        export PATH=$PATH:/opt/cuda/bin
+    fi
     ;;
   *)
     ;;
