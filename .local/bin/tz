@@ -1,124 +1,134 @@
 #!/usr/bin/env python3
 
 import argparse
- 
+import datetime
+import sys
+import zoneinfo
+
+import tabulate
+import tzlocal
+
 aliases = {
-    "Central Europe": 'Europe/Berlin',
-    "East Coast"    : 'US/Eastern',
-    "Wisconsin"     : 'US/Central',
-    "California"    : 'US/Pacific' ,   
-    "Chiba/Seoul"   : "Asia/Tokyo",
-    "Adelaide"      : 'Australia/Adelaide',
-    "Christchurch"  : 'Pacific/Auckland',
+    "Central Europe": "Europe/Berlin",
+    "East Coast": "US/Eastern",
+    "Wisconsin": "US/Central",
+    "California": "US/Pacific",
+    "Chiba/Seoul": "Asia/Tokyo",
+    "Adelaide": "Australia/Adelaide",
+    "Christchurch": "Pacific/Auckland",
 }
 
-parser = argparse.ArgumentParser(description='Convert localtime to other timezones')
-parser.add_argument('time', nargs='*',
-                    help='Time to convert (Default: Now)')
-parser.add_argument('--format','-f',default = '%a, %d %b, %Y at %H:%M %p %Z(%z)',
-                    help='Output format to use for times, same as used by strftime')
-parser.add_argument('--zones','-z',nargs='+',
-                    help="List of timezones to print out tht time")
-parser.add_argument('--list',action='store_true',
-                    help="Print a list of all timezones and exit")
+
+def get_arg(tt, c):
+    s = tt.split(c)
+    if len(s) in (2, 3):
+        return [int(x) for x in s]
+    raise ValueError
+
+
+parser = argparse.ArgumentParser(description="Convert localtime to other timezones")
+parser.add_argument("time", nargs="*", help="Time to convert (Default: Now)")
+parser.add_argument(
+    "--format",
+    "-f",
+    default="%a, %d %b, %Y at %H:%M %p %Z(%z)",
+    help="Output format to use for times, same as used by strftime",
+)
+parser.add_argument(
+    "--zones", "-z", nargs="+", help="List of timezones to print out tht time"
+)
+parser.add_argument(
+    "--list", action="store_true", help="Print a list of all timezones and exit"
+)
 
 args = parser.parse_args()
 
-import pytz
-
 if args.list:
-    for tz in pytz.all_timezones:
+    for tz in sorted(zoneinfo.available_timezones()):
         print(tz)
-    exit(0)
+    sys.exit(0)
 
-import datetime
-import tzlocal
-
-utctime = pytz.utc.localize(datetime.datetime.utcnow())
+utcnow = datetime.datetime.utcnow().replace(tzinfo=zoneinfo.ZoneInfo("UTC"))
 localzone = tzlocal.get_localzone()
 
 refdate = None
 reftime = None
 refzone = None
 
-def get_arg(t,c):
-    s=t.split(c)
-    if len(s) in (2,3):
-        return [ int(x) for x in s]
-    else:
-        raise ValueError
-
 for a in args.time:
     if refdate is None:
         try:
-            refdate = get_arg(a,'-')
-            continue        
+            refdate = get_arg(a, "-")
+            continue
         except ValueError as v:
             pass
         try:
-            refdate = get_arg(a,'/')
-            continue        
+            refdate = get_arg(a, "/")
+            continue
         except ValueError as v:
             pass
     if reftime is None:
         try:
-            reftime = get_arg(a,':')
-            continue        
+            reftime = get_arg(a, ":")
+            continue
         except ValueError as v:
             pass
-
     if refzone is None:
         try:
-            refzone = pytz.timezone(a)
+            refzone = zoneinfo.ZoneInfo(a)
             continue
-        except pytz.UnknownTimeZoneError as v:
+        except zoneinfo.ZoneInfoNotFoundError as v:
             pass
-    raise ValueError('I don\'t understand argument "{}"'.format(a))
+    raise ValueError(f'I don\'t understand argument "{a}"')
 
 if not refzone:
     refzone = localzone
-refdt = utctime.astimezone(refzone)
+refdt = utcnow.astimezone(refzone)
 
 if refdate:
-    if len(refdate)==2:
-        refdate=[refdt.year,refdate[0],refdate[1]]
+    if len(refdate) == 2:
+        refdate = [refdt.year, refdate[0], refdate[1]]
 else:
-    refdate=[refdt.year,refdt.month,refdt.day]
+    refdate = [refdt.year, refdt.month, refdt.day]
 
 if not reftime:
-    reftime = [refdt.hour,refdt.minute]
+    reftime = [refdt.hour, refdt.minute]
 
-refdt = refzone.localize(datetime.datetime(*(refdate+reftime)))
+refdt = datetime.datetime(*(refdate + reftime), tzinfo=refzone)
 
 if args.zones is None:
     args.zones = aliases.keys()
 
 zones = []
 found_local = False
-found_ref   = False
+found_ref = False
 localdt = refdt.astimezone(localzone)
-localoffset=localdt.utcoffset()
+localoffset = localdt.utcoffset()
 refoffset = refdt.utcoffset()
 
 for z in args.zones:
-    name = aliases.get(z,z)
-    zone = pytz.timezone(name)
+    name = aliases.get(z, z)
+    zone = zoneinfo.ZoneInfo(name)
     time = refdt.astimezone(zone)
-    if time.utcoffset()==localoffset:
-        found_local=True
-    if time.utcoffset()==refoffset:
-        found_ref=True
-    zones.append((z,time))
+    if time.utcoffset() == localoffset:
+        found_local = True
+    if time.utcoffset() == refoffset:
+        found_ref = True
+    zones.append((z, time))
 
 if not found_local:
-    zones.append((localzone.zone,localdt))
+    zones.append((str(localzone), localdt))
 
-if not found_ref and localoffset!=refoffset:
-    zones.append((refzone.zone,refdt))
+if not found_ref and localoffset != refoffset:
+    zones.append((str(refzone), refdt))
 
-for name,t in sorted(zones,key=lambda z: -z[1].utcoffset()):
-    if t.utcoffset()==refdt.utcoffset():
-        name+='*'
-    if t.utcoffset()==localdt.utcoffset():
-        name+='+'        
-    print("{:35} {}".format(name,t.strftime(args.format)))
+zones2 = []
+for name, time in zones:
+    if time.utcoffset() == refdt.utcoffset():
+        name += "*"
+    if time.utcoffset() == localdt.utcoffset():
+        name += "†"
+    zones2.append((name, time))
+
+zones2.sort(key=lambda z: -z[1].utcoffset())
+print(tabulate.tabulate(zones2, tablefmt="plain"))
