@@ -1,6 +1,5 @@
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export PYTHONPATH=${HOME}/.local/lib/python:$PYTHONPATH
 export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000
@@ -36,6 +35,7 @@ case ${HOSTNAME} in
     export _CONDOR_SCRATCH_DIR=$TMPDIR
     ;;
   black)
+    export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
     export I3_DATA=${HOME}/s1/icecube/data
     export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export TERMINAL=/usr/bin/kitty
