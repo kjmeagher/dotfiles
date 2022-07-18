@@ -33,6 +33,9 @@ case ${HOSTNAME} in
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
     export TMPDIR=/scratch/kmeagher/scratch
     export _CONDOR_SCRATCH_DIR=$TMPDIR
+    export RUSTUP_HOME=/data/user/kmeagher/.rustup 
+    export CARGO_HOME=/data/user/kmeagher/.cargo
+    export PATH=${CARGO_HOME}/bin:${PATH}
     ;;
   black)
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
