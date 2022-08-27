@@ -122,13 +122,14 @@ if not found_local:
 if not found_ref and localoffset != refoffset:
     zones.append((str(refzone), refdt))
 
+zones.sort(key=lambda z: -z[1].utcoffset())
+
 zones2 = []
 for name, time in zones:
     if time.utcoffset() == refdt.utcoffset():
         name += "*"
     if time.utcoffset() == localdt.utcoffset():
         name += "†"
-    zones2.append((name, time))
+    zones2.append((name, time.strftime(args.format)))
 
-zones2.sort(key=lambda z: -z[1].utcoffset())
 print(tabulate.tabulate(zones2, tablefmt="plain"))
