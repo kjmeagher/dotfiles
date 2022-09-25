@@ -19,16 +19,7 @@ case ${HOSTNAME} in
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
       export HOMEBREW_NO_INSTALL_CLEANUP=1
-      HOMEBREW_PREFIX=$(brew --prefix)
-      if type brew &>/dev/null; then
-        if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-          source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-        else
-          for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-            [[ -r "$COMPLETION" ]] && source "$COMPLETION"
-          done
-        fi
-      fi
+      [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
       ;;
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/

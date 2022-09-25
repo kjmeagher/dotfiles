@@ -30,6 +30,7 @@ fi
 case ${HOSTNAME} in 
     (silver)
       stty -ixon
+      alias python=python3
       ;;
     (black)
       stty -ixon
@@ -70,7 +71,7 @@ prompt_command () {
   else
     ERRPROMPT="${BRED}${ERR}${NC}"
   fi
-  PYTHON_VERSION=`python -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))"`
+  PYTHON_VERSION=`python3 -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))"`
   if [ "${PYTHON_VERSION}" -lt "300" ]; then
     PYPROMPT="${BPURPLE}${PYTHON_VERSION}${NC}"
   else
