@@ -11,3 +11,4 @@ build/
 
 *.hdf5
 *.i3.zst
+.DS_Store
