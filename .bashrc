@@ -34,7 +34,8 @@ case ${HOSTNAME} in
       ;;
     (black)
       stty -ixon
-    	alias hd=hexyl
+      alias hd=hexyl
+      alias clean_paru='paru -Qdtq | xargs -ro paru -Runs'
       ;;
     (*)
       ;;
