@@ -14,7 +14,6 @@ fi
 
 case ${HOSTNAME} in 
     silver)
-      export PATH=/usr/local/opt/python@3.11/libexec/bin:${PATH}
       export I3_TESTDATA=/cvmfs/icecube.opensciencegrid.org/data/i3-test-data-svn/trunk/
       export SROOT=/usr/local/
       export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
@@ -50,3 +49,4 @@ esac
 if [ -f ~/.bashrc ]; then
     source ~/.bashrc
 fi
+

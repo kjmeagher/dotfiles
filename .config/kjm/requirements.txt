@@ -2,3 +2,5 @@ tabulate
 tzlocal
 flit
 pip-review
+particle
+ipython
