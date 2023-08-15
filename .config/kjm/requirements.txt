@@ -4,3 +4,5 @@ flit
 pip-review
 particle
 ipython
+pre-commit
+reuse

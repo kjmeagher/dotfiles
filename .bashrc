@@ -10,6 +10,7 @@ case `uname -s` in
   Darwin*) 
     alias ldd="otool -L"
     color='-G'
+    stty -ixon
     ;;
   *)       
     echo Unknown Platform
@@ -28,10 +29,6 @@ else
 fi
 
 case ${HOSTNAME} in 
-    (silver)
-      stty -ixon
-      alias python=python3
-      ;;
     (black)
       stty -ixon
       alias hd=hexyl
