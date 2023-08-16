@@ -5,12 +5,6 @@ export HISTSIZE=100000
 export LESS='-R'
 export BETTER_EXCEPTIONS=1
 
-if type micro &> /dev/null; then
-  export EDITOR="micro"
-else
-  export EDITOR="nano"
-fi
-
 case ${HOSTNAME} in 
     KevinsLaptop)
       if [ -f ~/.zshenv ]; then
@@ -49,6 +43,12 @@ case ${HOSTNAME} in
 esac
 
 export PATH=${HOME}/.local/bin:${PATH}
+
+if type micro &> /dev/null; then
+  export EDITOR="micro"
+else
+  export EDITOR="nano"
+fi
 
 if [ -f ~/.bashrc ]; then
     source ~/.bashrc
