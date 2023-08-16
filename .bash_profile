@@ -1,6 +1,5 @@
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export PATH=${HOME}/.local/bin:${PATH}
 export SVN=http://code.icecube.wisc.edu/svn
 export HISTSIZE=100000
 export LESS='-R'
@@ -13,12 +12,15 @@ else
 fi
 
 case ${HOSTNAME} in 
-    silver)
-      export I3_TESTDATA=/cvmfs/icecube.opensciencegrid.org/data/i3-test-data-svn/trunk/
-      export SROOT=/usr/local/
-      export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
+    KevinsLaptop)
+      if [ -f ~/.zshenv ]; then
+        source ~/.zshenv
+      fi
+      #export I3_TESTDATA=/cvmfs/icecube.opensciencegrid.org/data/i3-test-data-svn/trunk/
+      #export SROOT=/usr/local/
+      #export PKG_CONFIG_PATH=/usr/local/opt/libarchive/lib/pkgconfig/:/usr/local/opt/openblas/lib/pkgconfig/
       export HOMEBREW_NO_INSTALL_CLEANUP=1
-      [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+      [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
       ;;
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
@@ -45,6 +47,8 @@ case ${HOSTNAME} in
   *)
     ;;
 esac
+
+export PATH=${HOME}/.local/bin:${PATH}
 
 if [ -f ~/.bashrc ]; then
     source ~/.bashrc

@@ -1,0 +1,13 @@
+{
+  "terminal.integrated.profiles.osx": {
+    "env-shell": {
+      "path": "${workspaceFolder}/../build/env-shell.sh",
+      "args": ["bash",],
+      "icon": "arrow-circle-right",
+    }
+  },
+    "terminal.integrated.defaultProfile.osx": "env-shell",
+    "cmake.buildDirectory": "${workspaceFolder}/../build",
+    "python.analysis.extraPaths": ["../build/lib"],
+    "python.analysis.stubPath": "stubs",
+}
