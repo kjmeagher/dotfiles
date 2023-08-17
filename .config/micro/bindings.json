@@ -1,0 +1,9 @@
+{
+    "Alt-/": "lua:comment.comment",
+    "CtrlUnderscore": "lua:comment.comment",
+    "F3": "FindNext",
+    "Ctrl-a": "StartOfLine",
+    "Ctrl-e": "EndOfLine",
+    "CtrlRight":      "WordRight",
+    "CtrlLeft":       "WordLeft",
+}
