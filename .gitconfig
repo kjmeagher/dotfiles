@@ -25,3 +25,10 @@
     conflictstyle = diff3
 [diff]
     colorMoved = default
+    
+[alias]
+    co   = checkout
+    dog  = log --graph --decorate --oneline --all
+    ls   = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate
+    ll   = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%an]" --decorate --stat
+    up   = pull --rebase --autostash
