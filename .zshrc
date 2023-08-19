@@ -9,7 +9,6 @@ alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 case `uname -s` in
   Linux*)
     color='--color=auto'
-    shopt -s direxpand
     ;;
   Darwin*)
     alias ldd="otool -L"
@@ -43,7 +42,7 @@ compinit
 
 PYTHON_VERSION=`python3 -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))"`
 
-if [[ -v I3_BUILD ]]; then
+if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
 else
