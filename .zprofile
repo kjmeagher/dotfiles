@@ -14,3 +14,9 @@ if (( $+commands[micro] )); then
 else
   export EDITOR="nano"
 fi
+
+case ${HOST} in
+  black)
+    export TERMINAL=/usr/bin/kitty
+  ;;
+esac
