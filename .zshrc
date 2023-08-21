@@ -47,3 +47,6 @@ else
 fi
 setopt PROMPT_SUBST
 PROMPT='%(?..%F{red})$(printf %02x $?)%f:%F{blue}${PYTHON_VERSION}%f${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
+
+#shell integeration for codium
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(codium --locate-shell-integration-path zsh)"

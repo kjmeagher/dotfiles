@@ -5,7 +5,7 @@
     "Ctrl-a": "StartOfLine",
     "Ctrl-e": "EndOfLine",
     "Ctrl-n": "CursorUp",
-    "Ctrl-e": "CursorDown",
+    "Ctrl-p": "CursorDown",
     "CtrlRight": "WordRight",
     "CtrlLeft": "WordLeft",
 }
