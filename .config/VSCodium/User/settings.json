@@ -1,0 +1,8 @@
+{
+    "cmake.configureOnOpen": true,
+    "cmake.ctestDefaultArgs": [
+        "--output-on-failure"
+    ],
+    "git.autofetch": true,
+    "editor.fontFamily": "hack, Menlo, Monaco, 'Courier New', monospace",
+}
