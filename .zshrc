@@ -3,6 +3,11 @@ HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 bindkey -e
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+
 stty -ixon
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 
