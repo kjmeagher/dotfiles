@@ -11,6 +11,11 @@ bindkey "^[[F" end-of-line
 stty -ixon
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 
+if (( $+commands[brew] )); then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  FPATH="$(brew --prefix)/share/zsh-completions:${FPATH}"
+fi
+
 autoload -Uz compinit
 compinit
 
