@@ -2,10 +2,10 @@
     "Alt-/": "lua:comment.comment",
     "CtrlUnderscore": "lua:comment.comment",
     "F3": "FindNext",
-    "Ctrl-a": "StartOfLine",
+    "Ctrl-a": "StartOfText",
     "Ctrl-e": "EndOfLine",
-    "Ctrl-n": "CursorUp",
-    "Ctrl-p": "CursorDown",
+    "Ctrl-n": "CursorDown",
+    "Ctrl-p": "CursorUp",
     "CtrlRight": "WordRight",
     "CtrlLeft": "WordLeft",
 }

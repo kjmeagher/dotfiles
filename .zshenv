@@ -24,7 +24,7 @@ case ${HOST} in
     export _CONDOR_SCRATCH_DIR=$TMPDIR
     export RUSTUP_HOME=/data/user/kmeagher/.rustup
     export CARGO_HOME=/data/user/kmeagher/.cargo
-    export PATH=${CARGO_HOME}/bin:${PATH}
+    export PATH=${HOME}/.local/bin:${CARGO_HOME}/bin:${PATH}
     ;;
   black)
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
