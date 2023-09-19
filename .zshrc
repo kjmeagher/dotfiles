@@ -33,9 +33,9 @@ case `uname -s` in
     ;;
 esac
 
-if (( $+commands[exa] )); then
-  alias ll='exa -ls modified --time-style=iso'
-  alias ls='exa'
+if (( $+commands[eza] )); then
+  alias ll='eza -ls modified --time-style=iso'
+  alias ls='eza'
 else
   alias ls="ls -Fh ${color}"
   alias ll="ls -ltr"

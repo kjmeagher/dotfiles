@@ -8,7 +8,6 @@
   "terminal.integrated.profiles.osx": {
     "env-shell": {
       "path": "${workspaceFolder}/../build/env-shell.sh",
-      "args": ["bash",],
       "icon": "arrow-circle-right",
     }
   },

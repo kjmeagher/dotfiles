@@ -17,6 +17,7 @@ fi
 case ${HOST} in
   KevinsLaptop)
    	export I3_TESTDATA=${HOME}/icecube/test-data/trunk
+   	export PATH=$(python -m site --user-base)/bin:${PATH}
     ;;
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
