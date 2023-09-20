@@ -17,6 +17,9 @@ if (( $+commands[brew] )); then
   FPATH="$(brew --prefix)/share/zsh-completions:${FPATH}"
 fi
 
+#shell integeration for codium
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(codium --locate-shell-integration-path zsh)"
+
 autoload -Uz compinit
 compinit
 autoload -Uz python_version
@@ -58,6 +61,3 @@ else
 fi
 setopt PROMPT_SUBST
 PROMPT='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
-
-#shell integeration for codium
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(codium --locate-shell-integration-path zsh)"
