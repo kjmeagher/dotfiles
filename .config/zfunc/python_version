@@ -1,0 +1,9 @@
+python_version() {
+	ver=$(python -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))")
+	if [[ ${ver} -ge 300 ]]; then
+		x='%F{blue}'
+	else
+		x='%F{magenta}'
+	fi
+	echo ${x}${ver}%f
+}

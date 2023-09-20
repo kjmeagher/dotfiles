@@ -1,6 +1,8 @@
 #macos loads this file for every gui program so we need to put all the variables
 #needed in codium here. It doesn't load the other .zsh files except in the terminal
 
+FPATH=${HOME}/.config/zfunc:$FPATH
+
 if [ -x '/opt/homebrew/bin/brew' ]; then
   export PATH='/opt/homebrew/bin':${PATH}
 elif [ -x '/usr/local/bin/brew' ]; then

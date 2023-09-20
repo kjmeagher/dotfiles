@@ -19,6 +19,7 @@ fi
 
 autoload -Uz compinit
 compinit
+autoload -Uz python_version
 
 case `uname -s` in
   Linux*)
@@ -49,7 +50,6 @@ if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
 fi
 
-PYTHON_VERSION=`python3 -c "v=__import__('sys').version_info;print('%d%02d'%(v.major,v.minor))"`
 if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
@@ -57,7 +57,7 @@ else
 	I3PROMPT="-%F{cyan}%n$f@"
 fi
 setopt PROMPT_SUBST
-PROMPT='%(?..%F{red})$(printf %02x $?)%f:%F{blue}${PYTHON_VERSION}%f${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
+PROMPT='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
 
 #shell integeration for codium
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(codium --locate-shell-integration-path zsh)"
