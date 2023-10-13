@@ -2,18 +2,25 @@
   "terminal.integrated.profiles.linux": {
     "env-shell": {
       "path": "${workspaceFolder}/../build/env-shell.sh",
-      "icon": "arrow-circle-right",
-    },
+      "icon": "arrow-circle-right"
+    }
   },
   "terminal.integrated.profiles.osx": {
     "env-shell": {
       "path": "${workspaceFolder}/../build/env-shell.sh",
-      "icon": "arrow-circle-right",
+      "icon": "arrow-circle-right"
     }
   },
-    "terminal.integrated.defaultProfile.linux": "env-shell",
-    "terminal.integrated.defaultProfile.osx": "env-shell",
-    "cmake.buildDirectory": "${workspaceFolder}/../build",
-    "python.analysis.extraPaths": ["../build/lib"],
-    "python.analysis.stubPath": "stubs",
+  "terminal.integrated.defaultProfile.linux": "env-shell",
+  "terminal.integrated.defaultProfile.osx": "env-shell",
+  "cmake.buildDirectory": "${workspaceFolder}/../build",
+  "python.analysis.extraPaths": ["../build/lib"],
+  "python.analysis.stubPath": "stubs",
+  "cmake.ctest.allowParallelJobs": true,
+  "cmake.testEnvironment": {
+    "PYTHONPATH": "${workspaceFolder}/../build/lib/",
+    "I3_BUILD": "${workspaceFolder}/../build",
+    "I3_SRC": "${workspaceFolder}",
+    "PATH": "${workspaceFolder}/../build/bin:${env:PATH}",
+  }
 }
