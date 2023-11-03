@@ -1,10 +1,8 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.ctestDefaultArgs": [
-        "--output-on-failure"
-    ],
     "git.autofetch": true,
     "editor.fontFamily": "hack, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 15,
     "terminal.integrated.fontSize": 16,
+    "mesonbuild.downloadLanguageServer": true,
 }

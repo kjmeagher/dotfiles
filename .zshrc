@@ -1,7 +1,7 @@
 # Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTFILE=${HOME}/.local/state/zsh/histfile
+HISTSIZE=100000
+SAVEHIST=100
 bindkey -e
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
@@ -23,6 +23,7 @@ fi
 autoload -Uz compinit
 compinit
 autoload -Uz python_version
+compinit -d "${HOME}"/.cache/zsh/zcompdump-"$ZSH_VERSION"
 
 case `uname -s` in
   Linux*)

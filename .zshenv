@@ -35,6 +35,7 @@ case ${HOST} in
     export I3_DATA=${HOME}/s1/icecube/data
     export I3_TESTDATA=${I3_DATA}/i3-test-data-svn/trunk
     export LD_LIBRARY_PATH=/usr/local/lib
+    export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin:$(python -m site --user-base)/bin:${PATH}
     # export G4LEVELGAMMADATA=/usr/share/geant4-levelgammadata/PhotonEvaporation5.7
     # export G4ENSDFSTATEDATA=/usr/share/geant4-ensdfstatedata/G4ENSDFSTATE2.3
     # export G4LEDATA=/usr/share/geant4-ledata/G4EMLOW7.13/

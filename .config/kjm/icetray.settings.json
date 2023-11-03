@@ -17,6 +17,8 @@
   "python.analysis.extraPaths": ["../build/lib"],
   "python.analysis.stubPath": "stubs",
   "cmake.ctest.allowParallelJobs": true,
+  "cmake.configureArgs": [ "pybindings" ],
+  "cmake.buildArgs": [ "--target", "pybindings" ],
   "cmake.testEnvironment": {
     "PYTHONPATH": "${workspaceFolder}/../build/lib/",
     "I3_BUILD": "${workspaceFolder}/../build",
