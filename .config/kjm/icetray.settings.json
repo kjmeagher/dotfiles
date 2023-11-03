@@ -24,5 +24,6 @@
     "I3_BUILD": "${workspaceFolder}/../build",
     "I3_SRC": "${workspaceFolder}",
     "PATH": "${workspaceFolder}/../build/bin:${env:PATH}",
+    "TERM": "vt100",
   }
 }
