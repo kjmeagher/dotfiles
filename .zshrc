@@ -1,5 +1,5 @@
+
 # Lines configured by zsh-newuser-install
-HISTFILE=${HOME}/.local/state/zsh/histfile
 HISTSIZE=100000
 SAVEHIST=100
 bindkey -e
@@ -11,15 +11,11 @@ bindkey "^[[3~" delete-char
 
 stty -ixon
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
-
-if (( $+commands[brew] )); then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-  FPATH="$(brew --prefix)/share/zsh-completions:${FPATH}"
-fi
-
+ 
 #shell integeration for codium
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(codium --locate-shell-integration-path zsh)"
-
+codium=/Applications/VSCodium.app/Contents/Resources/app/bin/codium
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${codium} --locate-shell-integration-path zsh)"
+ 
 autoload -Uz compinit
 compinit
 autoload -Uz python_version
@@ -53,12 +49,16 @@ fi
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
 fi
-
+ 
 if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
+	export PATH=$(echo $PATH | tr ":" "\n" | grep -v '\.local' | xargs | tr ' ' ':')
+	
+	source ${I3_BUILD}/../venv/bin/activate
 else
 	I3PROMPT="-%F{cyan}%n$f@"
+	source ${HOME}/.local/bin/activate
 fi
 setopt PROMPT_SUBST
 PROMPT='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
