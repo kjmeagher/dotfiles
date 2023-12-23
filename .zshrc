@@ -54,11 +54,14 @@ if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
 	export PATH=$(echo $PATH | tr ":" "\n" | grep -v '\.local' | xargs | tr ' ' ':')
-	
 	source ${I3_BUILD}/../venv/bin/activate
 else
 	I3PROMPT="-%F{cyan}%n$f@"
-	source ${HOME}/.local/bin/activate
+
+	if [[ -n "${VSCODE_PID}" ]]; then
+	else
+		source ${HOME}/.local/bin/activate
+	fi
 fi
 setopt PROMPT_SUBST
 PROMPT='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '

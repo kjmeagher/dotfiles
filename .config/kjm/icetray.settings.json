@@ -14,7 +14,7 @@
   "terminal.integrated.defaultProfile.linux": "env-shell",
   "terminal.integrated.defaultProfile.osx": "env-shell",
   "cmake.buildDirectory": "${workspaceFolder}/../build",
-  "python.analysis.extraPaths": ["../build/lib"],
+  "python.analysis.extraPaths": ["../build/lib", "../venv/lib/python3.12/site-packages/"],
   "python.analysis.stubPath": "stubs",
   "cmake.ctest.allowParallelJobs": true,
   "cmake.buildArgs": [ "--target", "pybindings", "--target", "test-bins" ],
@@ -22,7 +22,10 @@
     "PYTHONPATH": "${workspaceFolder}/../build/lib/",
     "I3_BUILD": "${workspaceFolder}/../build",
     "I3_SRC": "${workspaceFolder}",
-    "PATH": "${workspaceFolder}/../build/bin:${env:PATH}",
+    "PATH": "${workspaceFolder}/../build/bin:${workspaceFolder}/../venv/bin:${env:PATH}",
     "TERM": "vt100",
-  }
+  },
+  "cmake.configureArgs": [
+    "-DPython_ROOT_DIR=~/icecube/icetray/venv"
+  ]
 }
