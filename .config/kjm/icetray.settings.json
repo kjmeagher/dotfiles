@@ -26,6 +26,7 @@
     "TERM": "vt100",
   },
   "cmake.configureArgs": [
-    "-DPython_ROOT_DIR=~/icecube/icetray/venv"
+    "-DPython_ROOT_DIR=~/icecube/icetray/venv",
+    "-Wno-dev"
   ]
 }
