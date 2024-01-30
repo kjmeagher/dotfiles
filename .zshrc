@@ -1,5 +1,3 @@
-
-# Lines configured by zsh-newuser-install
 HISTSIZE=100000
 SAVEHIST=100
 bindkey -e
@@ -11,16 +9,11 @@ bindkey "^[[3~" delete-char
 
 stty -ixon
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
- 
+
 #shell integeration for codium
 codium=/Applications/VSCodium.app/Contents/Resources/app/bin/codium
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(${codium} --locate-shell-integration-path zsh)"
  
-autoload -Uz compinit
-compinit
-autoload -Uz python_version
-compinit -d "${HOME}"/.cache/zsh/zcompdump-"$ZSH_VERSION"
-
 case `uname -s` in
   Linux*)
     color='--color=auto'
@@ -33,6 +26,26 @@ case `uname -s` in
     echo Unknown Platform
     ;;
 esac
+
+if [ -x '/opt/homebrew/bin/brew' ]; then
+  brew=/opt/homebrew/bin/brew
+elif [ -x '/usr/local/bin/brew' ]; then
+  brew=/usr/local/bin/brew
+fi
+ 
+if [[ -n "${brew+1}" ]]; then
+  eval $(${brew} shellenv)
+  export HDF5_DIR=$(brew --prefix hdf5)
+  export SROOT=$(brew --prefix)
+  export PKG_CONFIG_PATH=$(brew --prefix libarchive)/lib/pkgconfig/:$(brew --prefix openblas)/lib/pkgconfig/
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+
+if (( $+commands[micro] )); then
+  export EDITOR="micro"
+else
+  export EDITOR="nano"
+fi
 
 if (( $+commands[eza] )); then
   alias ll='eza -ls modified --time-style=iso'
@@ -49,6 +62,13 @@ fi
 if [ -f ~/.aliases.sh ]; then
    source ~/.aliases.sh
 fi
+
+FPATH=${HOME}/.config/zfunc:$FPATH
+autoload -Uz compinit
+compinit
+autoload -Uz python_version
+compinit -d "${HOME}"/.cache/zsh/zcompdump-"$ZSH_VERSION"
+
  
 if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
@@ -57,10 +77,9 @@ if [[ -n "${I3_BUILD}" ]]; then
 	source ${I3_BUILD}/../venv/bin/activate
 else
 	I3PROMPT="-%F{cyan}%n$f@"
-
 	if [[ -n "${VSCODE_PID}" ]]; then
 	else
-		source ${HOME}/.local/bin/activate
+		source "${HOME}/.rye/env"
 	fi
 fi
 setopt PROMPT_SUBST

@@ -1,14 +1,9 @@
+export SRUN="zprofile:${SRUN}"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export LESS='-R'
 export BETTER_EXCEPTIONS=1
  
-if (( $+commands[micro] )); then
-  export EDITOR="micro"
-else
-  export EDITOR="nano"
-fi
-
 case ${HOST} in
   cobalt*)
     export I3_DATA=/cvmfs/icecube.opensciencegrid.org/data/
@@ -34,4 +29,7 @@ case ${HOST} in
     #     export PATH=$PATH:/opt/cuda/bin
     # fi
     ;;
+  KevinsLaptop)
+    export I3_TESTDATA=${HOME}/icecube/test-data/trunk
+  	;;
 esac
