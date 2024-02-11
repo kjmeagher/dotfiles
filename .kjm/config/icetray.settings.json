@@ -1,7 +1,7 @@
 {
   "cmake.buildDirectory": "${workspaceFolder}/../debug",
   "cmake.configureArgs": [
-    "-DPython_ROOT_DIR=~/icecube/icetray/venv",
+    "-DPython_ROOT_DIR=~/icecube/icetray/venv312",
     "-Wno-dev",
   ],
   "cmake.ctest.allowParallelJobs": true,
@@ -10,10 +10,10 @@
     "PYTHONPATH": "${workspaceFolder}/../debug/lib/",
     "I3_BUILD": "${workspaceFolder}/../debug",
     "I3_SRC": "${workspaceFolder}",
-    "PATH": "${workspaceFolder}/../debug/bin:${workspaceFolder}/../venv/bin:${env:PATH}",
+    "PATH": "${workspaceFolder}/../debug/bin:${workspaceFolder}/../venv312/bin:${env:PATH}",
     "TERM": "vt100",
   },
-  "python.analysis.extraPaths": ["../debug/lib", "../venv/lib/python3.12/site-packages/"],
+  "python.analysis.extraPaths": ["../debug/lib", "../venv312/lib/python3.12/site-packages/"],
   "python.analysis.stubPath": "stubs",
   "terminal.integrated.profiles.linux": {
     "env-shell": {

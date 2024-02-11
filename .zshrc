@@ -37,8 +37,9 @@ fi
  
 if [[ -n "${brew+1}" ]]; then
   eval $(${brew} shellenv)
+  export PATH=$(brew --prefix python@3.12)/libexec/bin:${PATH}
   export HDF5_DIR=$(brew --prefix hdf5)
-  export SROOT=$(brew --prefix)
+  # export SROOT=$(brew --prefix)
   export PKG_CONFIG_PATH=$(brew --prefix libarchive)/lib/pkgconfig/:$(brew --prefix openblas)/lib/pkgconfig/
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
@@ -71,17 +72,23 @@ compinit
 autoload -Uz python_version
 compinit -d "${HOME}"/.cache/zsh/zcompdump-"$ZSH_VERSION"
 
- 
+
+pyver=$(python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
 if [[ -n "${I3_BUILD}" ]]; then
 	export I3_VERSION=`grep Version ${I3_BUILD}/env-shell.sh | cut -d" " -f7`/`basename ${I3_BUILD}`
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
 	export PATH=$(echo $PATH | tr ":" "\n" | grep -v '\.local' | xargs | tr ' ' ':')
-	source ${I3_BUILD}/../venv$(python_version)/bin/activate
+	if [[ ${I3_BUILD} == /cvmfs/* ]]; then
+		source ${HOME}/.venv-icecube${pyver}/bin/activate
+	else
+		source ${I3_BUILD}/../venv${pyver}/bin/activate
+	fi
 else
 	I3PROMPT="-%F{cyan}%n$f@"
 	if [[ -n "${VSCODE_PID}" ]]; then
 	else
-		source ${HOME}/.venv$(python_version)/bin/activate
+		venvdir=${HOME}/.venv${pyver}/bin
+		source ${HOME}/.venv${pyver}/bin/activate
 	fi
 fi
 setopt PROMPT_SUBST
