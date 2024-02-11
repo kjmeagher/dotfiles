@@ -1,0 +1,32 @@
+{
+  "cmake.buildDirectory": "${workspaceFolder}/../debug",
+  "cmake.configureArgs": [
+    "-DPython_ROOT_DIR=~/icecube/icetray/venv",
+    "-Wno-dev",
+  ],
+  "cmake.ctest.allowParallelJobs": true,
+  "cmake.buildArgs": [ "--target", "pybindings", "--target", "test-bins" ],
+  "cmake.testEnvironment": {
+    "PYTHONPATH": "${workspaceFolder}/../debug/lib/",
+    "I3_BUILD": "${workspaceFolder}/../debug",
+    "I3_SRC": "${workspaceFolder}",
+    "PATH": "${workspaceFolder}/../debug/bin:${workspaceFolder}/../venv/bin:${env:PATH}",
+    "TERM": "vt100",
+  },
+  "python.analysis.extraPaths": ["../debug/lib", "../venv/lib/python3.12/site-packages/"],
+  "python.analysis.stubPath": "stubs",
+  "terminal.integrated.profiles.linux": {
+    "env-shell": {
+      "path": "${workspaceFolder}/../debug/env-shell.sh",
+      "icon": "arrow-circle-right"
+    }
+  },
+  "terminal.integrated.profiles.osx": {
+    "env-shell": {
+      "path": "${workspaceFolder}/../debug/env-shell.sh",
+      "icon": "arrow-circle-right"
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "env-shell",
+  "terminal.integrated.defaultProfile.osx": "env-shell",
+}

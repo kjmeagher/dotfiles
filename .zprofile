@@ -3,6 +3,7 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export LESS='-R'
 export BETTER_EXCEPTIONS=1
+export PATH=${HOME}/.kjm/bin:${PATH}
  
 case ${HOST} in
   cobalt*)
