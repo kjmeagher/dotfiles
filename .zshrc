@@ -79,17 +79,17 @@ if [[ -n "${I3_BUILD}" ]]; then
 	I3PROMPT="[%F{red}${I3_VERSION}%f]"
 	export PATH=$(echo $PATH | tr ":" "\n" | grep -v '\.local' | xargs | tr ' ' ':')
 	if [[ ${I3_BUILD} == /cvmfs/* ]]; then
-		source ${HOME}/.venv-icecube${pyver}/bin/activate
+		venvdir=${HOME}/.venvs/ic${pyver}
 	else
-		source ${I3_BUILD}/../venv${pyver}/bin/activate
+		venvdir=${I3_BUILD}/../venv${pyver}
 	fi
 else
 	I3PROMPT="-%F{cyan}%n$f@"
 	if [[ -n "${VSCODE_PID}" ]]; then
 	else
-		venvdir=${HOME}/.venv${pyver}/bin
-		source ${HOME}/.venv${pyver}/bin/activate
+		venvdir=${HOME}/.venvs/py${pyver}
 	fi
 fi
+source ${venvdir}/bin/activate
 setopt PROMPT_SUBST
 PS1='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
