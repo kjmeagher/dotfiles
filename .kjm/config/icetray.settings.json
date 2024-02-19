@@ -1,7 +1,7 @@
 {
   "cmake.buildDirectory": "${workspaceFolder}/../debug",
   "cmake.configureArgs": [
-    "-DPython_ROOT_DIR=~/icecube/icetray/venv312",
+    "-DPython_ROOT_DIR=${workspaceFolder}/../venv312",
     "-Wno-dev",
   ],
   "cmake.ctest.allowParallelJobs": true,
