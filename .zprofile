@@ -4,6 +4,7 @@ export LSCOLORS=ExFxBxDxCxegedabagacad
 export LESS='-R'
 export BETTER_EXCEPTIONS=1
 export PATH=${HOME}/.kjm/bin:${PATH}
+export HISTFILE=.zsh_history
  
 case ${HOST} in
   cobalt*)

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cvmfs="${1}"
+shift
+args="${@}"
+
+if [ ! -z "${SROOT}" ]; then
+	echo "SROOT already set!"
+	exit -1
+fi
+
+setup_file="/cvmfs/icecube.opensciencegrid.org/${cvmfs}/setup.sh"
+if [ -e "${setup_file}" ]; then
+	eval $(${setup_file})
+	if [ -z "${args}" ]; then
+		/bin/zsh -i
+	else
+		echo "running ${args}"
+		/bin/zsh -ic "${args}"
+	fi
+else
+	echo "${setup_file} not found!"
+fi
+
+

@@ -90,6 +90,16 @@ else
 		venvdir=${HOME}/.venvs/py${pyver}
 	fi
 fi
-source ${venvdir}/bin/activate
+# if [ -d "${venvdir}" ]; then
+	source ${venvdir}/bin/activate
+# fi
+if [ ! -z "${VIRTUAL_ENV}" ]; then
+	echo "VIRTUAL_ENV ${VIRTUAL_ENV}"
+fi
+
 setopt PROMPT_SUBST
 PS1='%(?..%F{red})$(printf %02x $?)%f:$(python_version)${I3PROMPT}%F{green}%m%f:%F{yellow}%~%f%# '
+
+if [ ! -z "${SROOT}" ]; then
+	echo "SROOT: ${SROOT}"
+fi
