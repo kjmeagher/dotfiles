@@ -24,7 +24,8 @@
   "terminal.integrated.profiles.osx": {
     "env-shell": {
       "path": "${workspaceFolder}/../debug/env-shell.sh",
-      "icon": "arrow-circle-right"
+      "icon": "arrow-circle-right",
+      "args": ["/opt/homebrew/bin/fish"],
     }
   },
   "terminal.integrated.defaultProfile.linux": "env-shell",
