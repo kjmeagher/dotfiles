@@ -9,14 +9,16 @@ if [ ! -z "${SROOT}" ]; then
 	exit -1
 fi
 
-setup_file="/cvmfs/icecube.opensciencegrid.org/${cvmfs}/setup.sh"
+export SHELL=${HOME}/.kjm/bin/fish
+
+setup_file="/cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh"
 if [ -e "${setup_file}" ]; then
 	eval $(${setup_file})
 	if [ -z "${args}" ]; then
-		/bin/zsh -i
+		$SHELL -i
 	else
 		echo "running ${args}"
-		/bin/zsh -ic "${args}"
+		$SHELL -ic "${args}"
 	fi
 else
 	echo "${setup_file} not found!"
