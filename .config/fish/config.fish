@@ -22,6 +22,9 @@ switch $hostname
     # export PATH=$PATH:/opt/cuda/bin
   case KevinsLaptop
     export I3_TESTDATA=$HOME/icecube/test-data/trunk
+    set -x CXX /opt/homebrew/opt/llvm/bin/clang++
+    set -x LDFLAGS "-L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
+    set -x CPPFLAGS "-I/opt/homebrew/opt/llvm/include -fexperimental-library"
 end
 
 if status is-interactive
@@ -39,13 +42,6 @@ if status is-interactive
       set color '--color=auto'
     case '*'
       echo Unknown Platform
-  end
-
-  if command -q /Applications/VSCodium.app/Contents/Resources/app/bin/codium
-    alias code=/Applications/VSCodium.app/Contents/Resources/app/bin/codium
-  end
-  if string match -q "$TERM_PROGRAM" "vscode"
-    . (code --locate-shell-integration-path fish)
   end
 
   if command -q /opt/homebrew/bin/brew
@@ -78,6 +74,16 @@ if status is-interactive
   
   if command -q hexyl
     alias hd='hexyl --border none'
+  end
+
+  if command -q codium
+    set CODE codium
+  else if command -q /Applications/VSCodium.app/Contents/Resources/app/bin/codium
+    set CODE /Applications/VSCodium.app/Contents/Resources/app/bin/codium
+  end
+  if string match -q "$TERM_PROGRAM" "vscode"
+    . ($CODE --locate-shell-integration-path fish)
+    set -x EDITOR $CODE --wait
   end
 
   set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
