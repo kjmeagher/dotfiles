@@ -4,35 +4,36 @@ set -x LESS '-R'
 set -x BETTER_EXCEPTIONS 1
 
 switch $hostname 
-  case 'cobalt*'
-    set -x I3_DATA /cvmfs/icecube.opensciencegrid.org/data/
-    set -x TMPDIR /scratch/kmeagher/scratch
-    set -x _CONDOR_SCRATCH_DIR $TMPDIR
-    set -x RUSTUP_HOME=/data/user/kmeagher/.rustup
-    set -x CARGO_HOME=/data/user/kmeagher/.cargo
-    fish_add_path $CARGO_HOME/bin
-    set -xp MANPATH=$HOME/.kjm/share/man
   case black
     set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
     set -x TERMINAL /usr/bin/kitty
-    set -x I3_DATA $HOME/s1/icecube/data
-    set -x I3_TESTDATA $I3_DATA/i3-test-data-svn/trunk
     set -xp LD_LIBRARY_PATH /usr/local/lib
-    # export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin:${PATH}
-    # export PATH=$PATH:/opt/cuda/bin
-  case KevinsLaptop
-    export I3_TESTDATA=$HOME/icecube/test-data/trunk
-    set -x CXX /opt/homebrew/opt/llvm/bin/clang++
-    set -x LDFLAGS "-L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++"
-    set -x CPPFLAGS "-I/opt/homebrew/opt/llvm/include -fexperimental-library"
 end
 
 if status is-interactive
-
-  fish_add_path $HOME/.kjm/bin
+  
   alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
   alias pytest='python -m pytest'
   
+  if [ -d $HOME/.kjm ]
+    fish_add_path $HOME/.kjm/bin
+    set -xp MANPATH $HOME/.kjm/share/man
+  end
+  if [ -d /data/user/kmeagher/.cargo ]
+    set -x RUSTUP_HOME /data/user/kmeagher/.rustup
+    set -x CARGO_HOME /data/user/kmeagher/.cargo
+    fish_add_path $CARGO_HOME/bin
+  end
+  if [ -d $HOME/icecube/test-data/trunk ]
+    set -x I3_TESTDATA $HOME/icecube/test-data/trunk
+  else if [ -d $HOME/s1/icecube/data ]
+    set -x I3_DATA $HOME/s1/icecube/data
+    set -x I3_TESTDATA $I3_DATA/i3-test-data-svn/trunk
+  end
+  if [ -d /scratch/kmeagher/scratch ]
+    set -x TMPDIR /scratch/kmeagher/scratch
+    set -x _CONDOR_SCRATCH_DIR $TMPDIR
+  end
 
   switch (uname)
     case Darwin
@@ -84,6 +85,14 @@ if status is-interactive
   if string match -q "$TERM_PROGRAM" "vscode"
     . ($CODE --locate-shell-integration-path fish)
     set -x EDITOR $CODE --wait
+  end
+
+  if command -q /Applications/VSCodium.app/Contents/Resources/app/bin/codium
+    alias codium=/Applications/VSCodium.app/Contents/Resources/app/bin/codium
+  end
+  if string match -q "$TERM_PROGRAM" "vscode"
+    . (codium --locate-shell-integration-path fish)
+    set -x EDITOR 'codium --wait' 
   end
 
   set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")

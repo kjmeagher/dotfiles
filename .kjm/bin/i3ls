@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 print(args)
 
-f = pd.HDFStore(args.filename)
+f = pd.HDFStore(args.filename,'r')
 
 if args.table is None:
     x = []

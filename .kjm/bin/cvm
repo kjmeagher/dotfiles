@@ -9,11 +9,16 @@ if [ ! -z "${SROOT}" ]; then
 	exit -1
 fi
 
+if [ -z "${cvmfs}" ]; then
+	cvmfs='4.3.0'
+fi
+
 export SHELL=${HOME}/.kjm/bin/fish
 
 setup_file="/cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh"
 if [ -e "${setup_file}" ]; then
 	eval $(${setup_file})
+	unset PYTHONPATH
 	if [ -z "${args}" ]; then
 		$SHELL -i
 	else
