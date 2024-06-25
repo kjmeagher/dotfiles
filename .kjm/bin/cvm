@@ -2,7 +2,13 @@
 
 cvmfs="${1}"
 shift
-args="${@}"
+if [ $(basename ${0}) = "i3env" ]; then
+	icetray=${1}
+	shift
+	cmd="${@}"
+else
+	cmd="${@}"
+fi
 
 if [ ! -z "${SROOT}" ]; then
 	echo "SROOT already set!"
@@ -13,20 +19,44 @@ if [ -z "${cvmfs}" ]; then
 	cvmfs='4.3.0'
 fi
 
+if [ -x /cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh ]; then
+	setup_file="/cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh"
+else
+	setup_file="/cvmfs/icecube.opensciencegrid.org/${cvmfs}/setup.sh"
+	if [ ! -x $setup_file ]; then
+		echo Cant find setup.sh: $setup_file
+		exit -1
+	fi
+fi
+
+echo evaling ${setup_file}
+eval $(${setup_file})
+unset PYTHONPATH
 export SHELL=${HOME}/.kjm/bin/fish
 
-setup_file="/cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh"
-if [ -e "${setup_file}" ]; then
-	eval $(${setup_file})
-	unset PYTHONPATH
-	if [ -z "${args}" ]; then
-		$SHELL -i
-	else
-		echo "running ${args}"
-		$SHELL -ic "${args}"
-	fi
-else
-	echo "${setup_file} not found!"
+if [ -n "$icetray" ]; then
+  if [ -x $SROOT/metaprojects/${icetray}/env-shell.sh ]; then
+    env_shell=$SROOT/metaprojects/${icetray}/env-shell.sh
+  elif [ -x $SROOT/metaprojects/icetray/v${icetray}/env-shell.sh ]; then
+    env_shell=$SROOT/metaprojects/icetray/v${icetray}/env-shell.sh
+  elif [ -x ${icetray}/env-shell.sh ]; then
+    env_shell=${icetray}/env-shell.sh
+  fi
+  if [ -z "${env_shell}" ]; then
+    echo Can\'t find env shell with ${icetray}
+    exit -1
+  fi
 fi
+
+if [ -n "${env_shell}" ]; then
+  echo env_shell ${env_shell}
+  ${env_shell} ${cmd}
+elif [ -z "${cmd}" ]; then
+	$SHELL -i
+else
+	echo "running ${cmd}"
+	$SHELL -ic "${cmd}"
+fi
+
 
 

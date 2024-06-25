@@ -6,4 +6,5 @@ particle
 ipython
 pre-commit
 reuse
+numpy<2
 matplotlib

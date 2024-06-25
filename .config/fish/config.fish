@@ -3,7 +3,7 @@ set -x LSCOLORS ExFxBxDxCxegedabagacad
 set -x LESS '-R'
 set -x BETTER_EXCEPTIONS 1
 
-switch $hostname 
+switch $hostname
   case black
     set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
     set -x TERMINAL /usr/bin/kitty
@@ -11,10 +11,10 @@ switch $hostname
 end
 
 if status is-interactive
-  
+
   alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
   alias pytest='python -m pytest'
-  
+
   if [ -d $HOME/.kjm ]
     fish_add_path $HOME/.kjm/bin
     set -xp MANPATH $HOME/.kjm/share/man
@@ -72,7 +72,7 @@ if status is-interactive
     alias ls="ls -Fh $color"
     alias ll="ls -ltr"
   end
-  
+
   if command -q hexyl
     alias hd='hexyl --border none'
   end
@@ -92,18 +92,28 @@ if status is-interactive
   end
   if string match -q "$TERM_PROGRAM" "vscode"
     . (codium --locate-shell-integration-path fish)
-    set -x EDITOR 'codium --wait' 
+    set -x EDITOR 'codium --wait'
   end
 
   set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
   if set -q I3_BUILD
-    set venvdir $I3_BUILD/../venv$pyver
+    if test -d $I3_BUILD/../venv$pyver
+        set venvdir $I3_BUILD/../venv$pyver
+    else if test -d $HOME/.venvs/icetray-py$pyver
+        set venvdir $HOME/.venvs/icetray-py$pyver
+    else
+        echo "Cant find venv dir for icetray with python $pyver"
+    end
   else
     set venvdir $HOME/.venvs/py$pyver
   end
 
   if set -q venvdir
-    source $venvdir/bin/activate.fish
+    if test -f $venvdir/bin/activate.fish
+        source $venvdir/bin/activate.fish
+    else
+        echo "Can't find venv dir $venvdir"
+    end
   end
 end
 
