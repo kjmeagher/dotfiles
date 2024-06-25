@@ -5,4 +5,8 @@
     "editor.fontSize": 15,
     "terminal.integrated.fontSize": 16,
     "mesonbuild.downloadLanguageServer": true,
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+    ],
 }

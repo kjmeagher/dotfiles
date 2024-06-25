@@ -26,9 +26,8 @@ if status is-interactive
   end
   if [ -d $HOME/icecube/test-data/trunk ]
     set -x I3_TESTDATA $HOME/icecube/test-data/trunk
-  else if [ -d $HOME/s1/icecube/data ]
-    set -x I3_DATA $HOME/s1/icecube/data
-    set -x I3_TESTDATA $I3_DATA/i3-test-data-svn/trunk
+  else if [ -d /mnt/s2/icecube/data/test-data/trunk/ ]
+    set -x I3_TESTDATA /mnt/s2/icecube/data/test-data/trunk/
   end
   if [ -d /scratch/kmeagher/scratch ]
     set -x TMPDIR /scratch/kmeagher/scratch
@@ -108,12 +107,6 @@ if status is-interactive
     set venvdir $HOME/.venvs/py$pyver
   end
 
-  if set -q venvdir
-    if test -f $venvdir/bin/activate.fish
-        source $venvdir/bin/activate.fish
-    else
-        echo "Can't find venv dir $venvdir"
-    end
-  end
+  source $venvdir/bin/activate.fish
 end
 
