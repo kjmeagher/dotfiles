@@ -1,8 +1,3 @@
-set -x CLICOLOR 1
-set -x LSCOLORS ExFxBxDxCxegedabagacad
-set -x LESS '-R'
-set -x BETTER_EXCEPTIONS 1
-
 switch $hostname
   case black
     set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -12,17 +7,26 @@ end
 
 if status is-interactive
 
+  set -x CLICOLOR 1
+  set -x LSCOLORS ExFxBxDxCxegedabagacad
+  set -x LESS '-R'
+  set -x BETTER_EXCEPTIONS 1
+
   alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
   alias pytest='python -m pytest'
 
-  if [ -d $HOME/.kjm ]
-    fish_add_path $HOME/.kjm/bin
-    set -xp MANPATH $HOME/.kjm/share/man
+  if [ -d $HOME/.kjm/bin ]
+    set -xp PATH $HOME/.kjm/bin
+  end
+  if [ -d $HOME/.kjm/share/man ] 
+    if not contains $HOME/.kjm/share/man $MANPATH
+      set -xp MANPATH $HOME/.kjm/share/man
+    end
   end
   if [ -d /data/user/kmeagher/.cargo ]
     set -x RUSTUP_HOME /data/user/kmeagher/.rustup
     set -x CARGO_HOME /data/user/kmeagher/.cargo
-    fish_add_path $CARGO_HOME/bin
+    set -xp PATH $CARGO_HOME/bin
   end
   if [ -d $HOME/icecube/test-data/trunk ]
     set -x I3_TESTDATA $HOME/icecube/test-data/trunk
@@ -52,10 +56,21 @@ if status is-interactive
 
   if set -q brew
     eval ($brew shellenv)
-    fish_add_path (brew --prefix python@3.12)/libexec/bin
+    set -xp PATH (brew --prefix python@3.12)/libexec/bin
     set -x HDF5_DIR (brew --prefix hdf5)
     set -xp PKG_CONFIG_PATH (brew --prefix libarchive)/lib/pkgconfig/
     set -xp PKG_CONFIG_PATH (brew --prefix openblas)/lib/pkgconfig/
+    set -xp PKG_CONFIG_PATH (brew --prefix ncurses)/lib/pkgconfig/
+
+    if test -d (brew --prefix llvm)
+      function CLANG
+        CC=/opt/homebrew/opt/llvm/bin/clang \
+        CXX=/opt/homebrew/opt/llvm/bin/clang++ \
+        LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++" \
+        CPPFLAGS="-isystem/opt/homebrew/opt/llvm/include -fexperimental-library" \
+        $argv
+      end
+    end 
   end
 
   if command -q micro
@@ -86,14 +101,6 @@ if status is-interactive
     set -x EDITOR $CODE --wait
   end
 
-  if command -q /Applications/VSCodium.app/Contents/Resources/app/bin/codium
-    alias codium=/Applications/VSCodium.app/Contents/Resources/app/bin/codium
-  end
-  if string match -q "$TERM_PROGRAM" "vscode"
-    . (codium --locate-shell-integration-path fish)
-    set -x EDITOR 'codium --wait'
-  end
-
   set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
   if set -q I3_BUILD
     if test -d $I3_BUILD/../venv$pyver
@@ -108,5 +115,9 @@ if status is-interactive
   end
 
   source $venvdir/bin/activate.fish
+
+  if test -n $MANPATH[1]
+    set -xp MANPATH ""
+  end
 end
 

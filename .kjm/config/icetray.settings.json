@@ -2,7 +2,6 @@
   "cmake.buildDirectory": "${workspaceFolder}/../debug",
   "cmake.configureArgs": [
     "-DPython_ROOT_DIR=${workspaceFolder}/../venv312",
-    "-Wno-dev",
   ],
   "cmake.ctest.allowParallelJobs": true,
   "cmake.buildArgs": [ "--target", "pybindings", "--target", "test-bins" ],
@@ -30,4 +29,14 @@
   },
   "terminal.integrated.defaultProfile.linux": "env-shell",
   "terminal.integrated.defaultProfile.osx": "env-shell",
+  "cmake.configureEnvironment": {
+    "PKG_CONFIG_PATH": "${env:PKG_CONFIG_PATH}:${workspaceFolder}/../photosim_inst/lib/pkgconfig/"
+  },
+  "cmake.environment": {
+    "LD_LIBRARY_PATH": "${workspaceFolder}/../photosim_inst/lib",
+    "DYLD_LIBRARY_PATH": "${workspaceFolder}/../photosim_inst/lib"
+  },
+  "cmake.buildEnvironment": {
+    "DYLD_LIBRARY_PATH": "${workspaceFolder}/../photosim_inst/lib"
+  },
 }

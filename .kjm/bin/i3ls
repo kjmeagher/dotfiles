@@ -8,6 +8,7 @@ parser.add_argument('filename')
 parser.add_argument('table',nargs='?')
 parser.add_argument('columns',nargs='*')
 parser.add_argument('--keys','-k',action='store_true')
+parser.add_argument('--rows','-r',default=None,type=int)
 args = parser.parse_args()
 
 print(args)
@@ -33,9 +34,16 @@ elif args.keys:
 elif not args.columns:
 
     print(args.table)
-    print(f[args.table])
+    x = f[args.table]
+    if args.rows is not None:
+        x = x[:args.rows]
+    print(x)
 
 else:
-    print(f[args.table][args.columns])
+    x = f[args.table][args.columns]
+    if args.rows is not None:
+        x = x[:args.rows]
+    print(x)
+    
 
 f.close()
