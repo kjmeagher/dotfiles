@@ -61,16 +61,6 @@ if status is-interactive
     set -xp PKG_CONFIG_PATH (brew --prefix libarchive)/lib/pkgconfig/
     set -xp PKG_CONFIG_PATH (brew --prefix openblas)/lib/pkgconfig/
     set -xp PKG_CONFIG_PATH (brew --prefix ncurses)/lib/pkgconfig/
-
-    if test -d (brew --prefix llvm)
-      function CLANG
-        CC=/opt/homebrew/opt/llvm/bin/clang \
-        CXX=/opt/homebrew/opt/llvm/bin/clang++ \
-        LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/llvm/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm/lib/c++" \
-        CPPFLAGS="-isystem/opt/homebrew/opt/llvm/include -fexperimental-library" \
-        $argv
-      end
-    end 
   end
 
   if command -q micro
