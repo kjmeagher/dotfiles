@@ -5,6 +5,10 @@ switch $hostname
     set -xp LD_LIBRARY_PATH /usr/local/lib
 end
 
+if set -q SROOT
+    set -x BOOST_ROOT $SROOT
+end
+
 if status is-interactive
 
   set -x CLICOLOR 1
@@ -34,8 +38,11 @@ if status is-interactive
     set -x I3_TESTDATA /mnt/s2/icecube/data/test-data/trunk/
   end
   if [ -d /scratch/kmeagher/scratch ]
-    set -x TMPDIR /scratch/kmeagher/scratch
-    set -x _CONDOR_SCRATCH_DIR $TMPDIR
+    set -x _CONDOR_SCRATCH_DIR /scratch/kmeagher/scratch
+  end
+
+  if [ -d /data/user/kmeagher/opt/nvidia/Linux_x86_64/2024/compilers/bin/ ]
+    fish_add_path -P /data/user/kmeagher/opt/nvidia/Linux_x86_64/2024/compilers/bin/
   end
 
   switch (uname)
@@ -111,3 +118,6 @@ if status is-interactive
   end
 end
 
+if set -q I3_BUILD
+  set -xp PATH $I3_BUILD/bin
+end

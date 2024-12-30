@@ -55,7 +55,7 @@ elif [ -z "${cmd}" ]; then
 	$SHELL -i
 else
 	echo "running ${cmd}"
-	$SHELL -ic "${cmd}"
+	$SHELL -c "${cmd}"
 fi
 
 
