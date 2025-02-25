@@ -16,7 +16,7 @@ if [ ! -z "${SROOT}" ]; then
 fi
 
 if [ -z "${cvmfs}" ]; then
-	cvmfs='4.3.0'
+	cvmfs='4.4.0'
 fi
 
 if [ -x /cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh ]; then
