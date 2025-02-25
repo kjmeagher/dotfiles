@@ -63,7 +63,8 @@ if status is-interactive
 
   if set -q brew
     eval ($brew shellenv)
-    set -xp PATH (brew --prefix python@3.12)/libexec/bin
+    set -x UV_PYTHON 3.13
+    set pyver '313'
     set -x HDF5_DIR (brew --prefix hdf5)
     set -xp PKG_CONFIG_PATH (brew --prefix libarchive)/lib/pkgconfig/
     set -xp PKG_CONFIG_PATH (brew --prefix openblas)/lib/pkgconfig/
@@ -98,7 +99,9 @@ if status is-interactive
     set -x EDITOR $CODE --wait
   end
 
-  set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
+  if not set -q pyver
+    set pyver (python -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
+  end
   if set -q I3_BUILD
     if test -d $I3_BUILD/../venv$pyver
         set venvdir $I3_BUILD/../venv$pyver
@@ -113,11 +116,19 @@ if status is-interactive
 
   source $venvdir/bin/activate.fish
 
+  if set -q I3_BUILD
+    set -xp PATH $I3_BUILD/bin
+  end
+
   if test -n $MANPATH[1]
     set -xp MANPATH ""
   end
-end
 
-if set -q I3_BUILD
-  set -xp PATH $I3_BUILD/bin
+  if command -q uv
+    uv generate-shell-completion fish | source
+  end
+  if command -q uvx
+    uvx --generate-shell-completion fish | source
+  end
+  
 end

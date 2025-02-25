@@ -1,28 +1,28 @@
 {
-  "cmake.buildDirectory": "${workspaceFolder}/../debug",
+  "cmake.buildDirectory": "${workspaceFolder}/../release",
   "cmake.configureArgs": [
-    "-DPython_ROOT_DIR=${workspaceFolder}/../venv312",
+    "-DPython_ROOT_DIR=${workspaceFolder}/../venv313",
   ],
   "cmake.ctest.allowParallelJobs": true,
   "cmake.buildArgs": [ "--target", "pybindings", "--target", "test-bins" ],
   "cmake.testEnvironment": {
-    "PYTHONPATH": "${workspaceFolder}/../debug/lib/",
-    "I3_BUILD": "${workspaceFolder}/../debug",
+    "PYTHONPATH": "${workspaceFolder}/../release/lib/",
+    "I3_BUILD": "${workspaceFolder}/../release",
     "I3_SRC": "${workspaceFolder}",
-    "PATH": "${workspaceFolder}/../debug/bin:${workspaceFolder}/../venv312/bin:${env:PATH}",
+    "PATH": "${workspaceFolder}/../release/bin:${workspaceFolder}/../venv313/bin:${env:PATH}",
     "TERM": "vt100",
   },
-  "python.analysis.extraPaths": ["../debug/lib", "../venv312/lib/python3.12/site-packages/"],
+  "python.analysis.extraPaths": ["../release/lib", "../venv313/lib/python3.13/site-packages/"],
   "python.analysis.stubPath": "stubs",
   "terminal.integrated.profiles.linux": {
     "env-shell": {
-      "path": "${workspaceFolder}/../debug/env-shell.sh",
+      "path": "${workspaceFolder}/../release/env-shell.sh",
       "icon": "arrow-circle-right"
     }
   },
   "terminal.integrated.profiles.osx": {
     "env-shell": {
-      "path": "${workspaceFolder}/../debug/env-shell.sh",
+      "path": "${workspaceFolder}/../release/env-shell.sh",
       "icon": "arrow-circle-right",
       "args": ["/opt/homebrew/bin/fish"],
     }
