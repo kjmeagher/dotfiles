@@ -110,11 +110,17 @@ if status is-interactive
     else
         echo "Cant find venv dir for icetray with python $pyver"
     end
-  else
+  else if not set -q VIRTUAL_ENV
     set venvdir $HOME/.venvs/py$pyver
   end
 
-  source $venvdir/bin/activate.fish
+  # echo "VENV" $venvdir
+
+  if set -q venvdir
+    echo "VENV" $venvdir/bin/activate.fish
+  
+    source $venvdir/bin/activate.fish
+  end
 
   if set -q I3_BUILD
     set -xp PATH $I3_BUILD/bin

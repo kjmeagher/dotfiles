@@ -1,3 +1,5 @@
+tox-uv
+pre-commit-uv
 tabulate
 tzlocal
 flit
@@ -5,7 +7,7 @@ pip-review
 particle
 ipython
 pre-commit
-reuse
+reuse>=5
 numpy
 matplotlib
 multizone @ https://github.com/kjmeagher/multizone.git

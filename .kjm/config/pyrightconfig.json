@@ -1,0 +1,15 @@
+{
+"stubPath": "stubs",
+"extraPaths": ["../release/lib", "../venv313/lib/python3.13/site-packages/"],
+"reportAny": false,
+"reportUnusedImport": false,
+"reportUnknownVariableType": false,
+"reportMissingImports": false,
+"reportImplicitRelativeImport": false,
+"reportPossiblyUnboundVariable":false,
+"reportPrivateLocalImportUsage": false,
+"reportUnknownParameterType": false,
+"reportMissingParameterType":false,
+"reportUnknownArgumentType":false,
+"reportUnknownMemberType": false,
+}
