@@ -41,8 +41,10 @@ if status is-interactive
     set -x _CONDOR_SCRATCH_DIR /scratch/kmeagher/scratch
   end
 
-  if [ -d /data/user/kmeagher/opt/nvidia/Linux_x86_64/2024/compilers/bin/ ]
-    fish_add_path -P /data/user/kmeagher/opt/nvidia/Linux_x86_64/2024/compilers/bin/
+  set -l nv_dir /data/user/kmeagher/opt/nvidia/Linux_x86_64/24.5
+  if [ -d $nv_dir ]
+    set -xp PATH $nv_dir/compilers/bin/
+    set -xp MANPATH $nv_dir/25.3/compilers/man
   end
 
   switch (uname)
