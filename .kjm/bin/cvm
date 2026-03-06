@@ -1,7 +1,10 @@
 #!/bin/sh
 
 cvmfs="${1}"
-shift
+if [ ! -z "${cvmfs}" ]; then
+    shift
+fi
+
 if [ $(basename ${0}) = "i3env" ]; then
 	icetray=${1}
 	shift
@@ -16,7 +19,7 @@ if [ ! -z "${SROOT}" ]; then
 fi
 
 if [ -z "${cvmfs}" ]; then
-	cvmfs='4.4.0'
+	cvmfs='4.4.2'
 fi
 
 if [ -x /cvmfs/icecube.opensciencegrid.org/py3-v${cvmfs}/setup.sh ]; then
@@ -32,7 +35,7 @@ fi
 echo evaling ${setup_file}
 eval $(${setup_file})
 unset PYTHONPATH
-export SHELL=${HOME}/.kjm/bin/fish
+export SHELL=fish
 
 if [ -n "$icetray" ]; then
   if [ -x $SROOT/metaprojects/${icetray}/env-shell.sh ]; then

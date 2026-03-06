@@ -7,6 +7,8 @@ if not set -q EXPORTS_SET
       set -x SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
       set -x TERMINAL /usr/bin/kitty
       set -xp LD_LIBRARY_PATH /usr/local/lib
+    case n-gpu-42.icecube.wisc.edu
+      set -x XDG_CACHE_HOME /scratch/local/ice3simusr/.cache
   end
 
   switch (uname)
@@ -89,7 +91,7 @@ if status is-interactive
   end
 
   alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
- 
+
   if command -q eza
     alias ll='eza -ls modified --time-style=iso'
     alias ls='eza'

@@ -6,6 +6,7 @@
 release/
 debug/
 build/
+.venv/
 
 /MuonGun/resources/tables/*_[0-9]*
 /clsim/resources/safeprimes_base32.gz
