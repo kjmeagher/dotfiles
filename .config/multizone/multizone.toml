@@ -11,7 +11,7 @@ zones = [
   # "Europe/London",
   "Europe/Berlin",
   "America/New_York",
-  # "America/Chicago",
+  "America/Chicago",
   "America/Los_Angeles",
 ]
 
