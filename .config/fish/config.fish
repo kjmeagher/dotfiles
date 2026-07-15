@@ -31,14 +31,6 @@ if not set -q EXPORTS_SET
   set -x LESS '-R'
   set -x BETTER_EXCEPTIONS 1
 
-  if [ -d $HOME/.kjm/bin ]
-    set -xp PATH $HOME/.kjm/bin
-  end
-  if [ -d $HOME/.kjm/share/man ]
-    if not contains $HOME/.kjm/share/man $MANPATH
-      set -xp MANPATH $HOME/.kjm/share/man
-    end
-  end
   if [ -d /data/user/kmeagher/.cargo ]
     set -x RUSTUP_HOME /data/user/kmeagher/.rustup
     set -x CARGO_HOME /data/user/kmeagher/.cargo
@@ -90,8 +82,6 @@ if status is-interactive
       echo Unknown Platform
   end
 
-  alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
   if command -q eza
     alias ll='eza -ls modified --time-style=iso'
     alias ls='eza'
@@ -103,6 +93,9 @@ if status is-interactive
   if command -q hexyl
     alias hd='hexyl --border none'
   end
+
+  alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+  alias nvsmi='nvidia-smi --query-gpu=temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used'
 
   if command -q uv
     uv generate-shell-completion fish | source
@@ -119,11 +112,10 @@ else
   set _pyver (python3 -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
 end
 
-if set -q I3_BUILD
-  set _i3pyexe (string split '=' -f2 (grep PYTHON_EXECUTABLE $I3_BUILD/CMakeCache.txt))  
-  if test -e (dirname $_i3pyexe)/activate.fish
-    echo Found venv from CMakeCache.txt
-    set _venvdir (dirname (dirname $_i3pyexe))
+if set -q I3_SRC
+  if test -d $I3_SRC/.venv
+    echo found venv in I3_SRC
+    set _venvdir $I3_SRC/.venv
   else if test -d $HOME/.venvs/icetray-py$_pyver
     echo Using central IceTray venv
     set _venvdir $HOME/.venvs/icetray-py$_pyver
@@ -133,6 +125,7 @@ if set -q I3_BUILD
 else 
   if set -q VIRTUAL_ENV
     echo sticking with VIRTUAL_ENV: $VIRTUAL_ENV
+    set _venvdir $VIRTUAL_ENV
   else if test -e $PWD/.venv/bin/activate.fish
     set _venvdir $PWD/.venv
   else if test -e $HOME/.venvs/py$pyver/bin/activate.fish

@@ -7,6 +7,9 @@ release/
 debug/
 build/
 .venv/
+dcors0/
+kmeagher_icesoft/
+*.log
 
 /MuonGun/resources/tables/*_[0-9]*
 /clsim/resources/safeprimes_base32.gz
