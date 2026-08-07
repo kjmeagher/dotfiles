@@ -128,6 +128,8 @@ else
     set _venvdir $VIRTUAL_ENV
   else if test -e $PWD/.venv/bin/activate.fish
     set _venvdir $PWD/.venv
+  else if set -q VIRTUAL_ENV
+      echo sticking with VIRTUAL_ENV: $VIRTUAL_ENV
   else if test -e $HOME/.venvs/py$pyver/bin/activate.fish
     set _venvdir $HOME/.venvs/py$_pyver
   else

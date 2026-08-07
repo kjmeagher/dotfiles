@@ -1,4 +1,4 @@
-*~
+.config/git/ignore*~
 \#*#
 
 .vscode/
@@ -15,6 +15,7 @@ kmeagher_icesoft/
 /clsim/resources/safeprimes_base32.gz
 
 *.hdf5
+*.mp4
 *.i3.zst
 .DS_Store
 pyrightconfig.json
