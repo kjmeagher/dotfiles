@@ -47,10 +47,10 @@ if not set -q EXPORTS_SET
     end
   end
 
-  set -l nv_dir /data/user/kmeagher/opt/nvidia/Linux_x86_64/24.5
+  set -l nv_dir /data/user/kmeagher/opt/nvidia/Linux_x86_64/26.5/
   if [ -d $nv_dir ]
-    set -xp PATH $nv_dir/compilers/bin/
-    set -xp MANPATH $nv_dir/25.3/compilers/man
+    set -xp PATH $nv_dir/cuda/12.9/bin
+    set -xp MANPATH $nv_dir/compilers/man
   end
 
   if command -q brew
