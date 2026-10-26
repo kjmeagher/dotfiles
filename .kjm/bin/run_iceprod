@@ -1,0 +1,246 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+import sys
+from pathlib import Path
+import json
+from importlib import import_module
+from pprint import pprint, pformat
+import parser
+import os
+from subprocess import run
+
+def fmt_modules(x):
+    s = ''
+    for i, task in enumerate(x['tasks']):
+        s+='task {} {}:\n'.format(i,task['name'])
+        for j, tray in enumerate(task['trays']):
+            s+='  tray {} {}:\n'.format(j,tray['name'])
+            for k, module in enumerate(tray['modules']):
+                clsname = module["running_class"]
+                if not clsname:
+                   clsname = os.path.basename(module['src'])
+                else:
+                    ss = clsname.split('.')
+                    if ss[:3]==['icecube','simprod','modules']:
+                        clsname = '.'.join(['']+ss[3:])
+                s+=f'    module {k} {module["name"]}: {clsname}\n'
+    return s.strip()
+
+
+p = ArgumentParser()
+p.add_argument('json_file')
+p.add_argument('mindex',nargs="?")
+p.add_argument('-d',default=1,type=int)
+p.add_argument('-j',default=1,type=int)
+p.add_argument('-r',action='store_true')
+args = p.parse_args()
+# print(args)
+
+with open( args.json_file,'r') as f:
+    json_data = json.load(f)
+
+if args.mindex is None:
+    print(fmt_modules(json_data))
+    sys.exit()
+
+# json_data['steering']['parameters']['metaproject_src'] = os.environ['I3_SRC']
+env = {"parameters":{"job":1, "dataset":23582} }
+pars = parser.ExpParser(json_data)
+task_i,tray_i,module_i = (int(a) for a in args.mindex.split(','))
+
+N_tasks = len(json_data['tasks'])
+task = json_data['tasks'][task_i]
+N_trays = len(task['trays'])
+tray = task['trays'][tray_i]
+N_modules = len(tray['modules'])
+module = tray['modules'][module_i]
+
+lmax=0
+if isinstance(module['args'],dict):
+    margs = {}
+    for k,v in module['args'].items():
+        if isinstance(v,str):
+            v1 = pars.parse(v,env=env)
+            try:
+                v2 = eval(v1)
+            except(NameError, SyntaxError):
+                v2 = v1
+
+        else:
+          v2 = v
+        margs[k]=v2
+        # print(k,v,v1,v2)
+        lmax=max(lmax,len(k))
+else:
+  margs = []
+  for v in  module['args']:
+    if isinstance(v,str):
+        v1 = pars.parse(v,env=env)
+        try:
+            v2 = eval(v1)
+        except(NameError, SyntaxError):
+            v2 = v1
+    else:
+      v2 = v
+    margs.append(v2)
+
+if module["running_class"]:
+    run_meth = f"Class {module['running_class']}"
+else:
+    run_meth = f"Script {pars.parse(module['src'],env=env)}"
+
+print(f"Task : {task_i} / {N_tasks} {task['name']!r}")
+print(f"Tray : {tray_i} / {N_trays} {tray['name']!r}")
+print(f"Tray : {module_i} / {N_modules} {module['name']!r}")
+print(f"Run  : {run_meth}")
+print('Args :')
+if isinstance(margs,dict):
+    for k,v in margs.items():
+        print(f'{k:>{lmax}} : {v!r}')
+else:
+    for v in margs:
+        print(f'    {v!r}')
+
+config = {k:eval(pars.parse(v)) for k,v in module['configs'].items()}
+
+for c,v in  config.items():
+    print(f'{c} : ')
+    pprint(v,indent=2,)
+
+movement = []
+if tray_i==0 and module_i==0:
+    movement.append('input')
+if tray_i+1==N_trays and module_i+1 == N_modules:
+    movement.append('output')
+
+def data_movement(movement):
+    all_found = True
+    for d in task['data']:
+        if d['movement']==movement:
+            print(f"{movement} file:")
+            local_file =  pars.parse(pars.parse(d['local'],env=env))
+            remote_file = pars.parse(pars.parse(d['remote'],env=env))
+            exists = Path(local_file).is_file()
+            print(f"    movement : {d['movement']:6}")
+            print(f"       local : {local_file}")
+            print(f"      remote : {remote_file}")
+            print(f"        type : {d['type']}")
+            print(f"    transfer : {d['transfer']!r}")
+            print(f"      exists : {exists}")
+            all_found = all_found and exists
+
+    if args.r and not all_found:
+        print(f"{movement} files not found !!!!!")
+        sys.exit()
+        
+
+if 'input' in movement:
+    data_movement('input')
+ 
+if args.r:
+    for fname,v in config.items():
+        with open(fname,'w') as f:
+            json.dump(v,f)
+
+    if clsname := module['running_class']:
+        cs = clsname.split('.')
+        running_cls = getattr(import_module('.'.join(cs[:-1])),cs[-1])
+        print(running_cls)
+        print(dir(running_cls))
+        c = running_cls()
+        for k,v in margs.items():
+            c.SetParameter(k,v)
+        c.ShowParameters()
+        stats ={}
+        c.Execute(stats)
+        c.Finish()
+    else:
+        script = pars.parse(module['src'])
+        cmd = [script]
+        if hasattr(margs,'items'):
+          for k,v in margs.items():
+            if v is None:
+                cmd.append(f"--{k}")
+            # if v is False:
+            #     continue
+            else:
+                cmd.append(f"--{k}={v}")
+        else:
+          cmd += [x for x in margs]
+        pprint(cmd)
+        r = run(cmd)
+        print(f'return code : {r.returncode}')
+            # c.SetParameter(k,v)
+
+if 'output' in movement:
+    data_movement('output')
+
+
+
+
+# for d in task['data']:
+    
+#     print(d.keys())
+#     print(d['local'])
+#     print(pars.parse(d['local']))
+    
+
+  
+
+
+# pprint(pars.parse(module['args']))
+# fmt_modules(j)
+# exit()
+
+# task_i = int(sys.argv[2])
+# tray_i = int(sys.argv[3])
+# module_i = int(sys.argv[4])
+
+# module = j['tasks'][task_i]['trays'][tray_i]['modules'][module_i]
+# steering = j['steering']
+# # pprint(steering)
+
+# env = {"parameters":{
+#     "job":6666,
+#     "dataset":33,
+# }}
+# pars = parser.ExpParser(j, env = env)
+
+
+
+# if clsname := module['running_class']:
+#     cs = clsname.split('.')
+#     # running_cls = getattr(import_module('.'.join(cs[:-1])),cs[-1])
+#     # print(running_cls)
+#     # pprint(module)
+#     args=module['args']
+#     # pprint(args)
+
+#     for k,v in args.items():
+
+#         nv = pars.parse(v,env=env)
+#         print(f'{k:>20} {nv}')
+#         # print(20*' ',str(nv))
+
+
+# print(j.keys())
+# print(len(j['tasks']))
+# for task in j['tasks']:
+#     print(f"{task['name']} trays={len(task['trays'])}")
+#     for tray in task['trays']:
+#         print(f"  {tray['name']!r} modules={len(tray['modules'])}")
+#         for module in tray['modules']:
+#             if module['running_class']:
+#                 print(f"    {module['name']} {module['running_class']} args={len(module['args'])} parameters={len(module['parameters'])}")
+#             else:
+#                 print(f"    {module['src']} {module['running_class']} args={len(module['args'])} parameters={len(module['parameters'])}")
+               # print(f"    {module.keys()}")
+            # if module['name']=='NuGen':
+
+            # # pprint(module.keys())
+            #     pprint(module)
+            # break
+        # break
+
+    # break

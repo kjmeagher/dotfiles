@@ -1,8 +1,8 @@
 {
   "stubPath": "stubs",
   "extraPaths": [
-    "build/lib/python3.14/site-packages",
-    ".venv/lib/python3.14/site-packages"
+    "build/lib/python3.12/site-packages",
+    ".venv/lib/python3.12/site-packages"
   ],
   "reportAny": false,
   "reportUnusedImport": false,

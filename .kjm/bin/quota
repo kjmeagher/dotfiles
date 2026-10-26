@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+import getpass
+import subprocess
+
+username = getpass.getuser()
+with open("/home/quota/quota", "rt") as f:
+    home_quota_file = f.readlines()
+user_lines = [line for line in home_quota_file if line.startswith(username + "\t")]
+assert len(user_lines) == 1
+_, home_usage, home_quota = user_lines[0].split()
+
+
+def getfattr(q):
+    r = subprocess.run(
+        ["getfattr", "-n", "ceph." + q, "/data/user/" + username], capture_output=True
+    )
+    assert r.returncode == 0
+    return int(r.stdout.decode().split('"')[1])
+
+
+qbytes = getfattr("quota.max_bytes")
+ubytes = getfattr("dir.rbytes")
+qfiles = getfattr("quota.max_files")
+ufiles = getfattr("dir.rfiles")
+
+print("         Home     data/user bytes        files")
+print(f"usage   {home_usage:>5}   {ubytes:17,d}   {ufiles:10,}")
+print(f"quota   {home_quota:>5}   {qbytes:17,d}   {qfiles:10,}")
