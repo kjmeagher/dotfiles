@@ -34,12 +34,15 @@ if not set -q EXPORTS_SET
   if [ -d /data/user/kmeagher/.cargo ]
     set -x RUSTUP_HOME /data/user/kmeagher/.rustup
     set -x CARGO_HOME /data/user/kmeagher/.cargo
-    set -xp PATH $CARGO_HOME/bin
+    set -p _path $CARGO_HOME/bin
   end
   if [ -d $HOME/icecube/test-data/trunk ]
     set -x I3_TESTDATA $HOME/icecube/test-data/trunk
   else if [ -d /mnt/s2/icecube/data/test-data/trunk/ ]
     set -x I3_TESTDATA /mnt/s2/icecube/data/test-data/trunk/
+  end
+  if set -q I3_TESTDATA
+    set -x I3_DATA $I3_TESTDATA
   end
   if not set -q _CONDOR_SCRATCH_DIR
     if [ -d /scratch/kmeagher/scratch ]
@@ -47,12 +50,15 @@ if not set -q EXPORTS_SET
     end
   end
 
-  set -l nv_dir /data/user/kmeagher/opt/nvidia/Linux_x86_64/24.5/
-  if [ -d $nv_dir ]
-    set -xp PATH $nv_dir/cuda/12.4/bin
-    set -xp MANPATH $nv_dir/compilers/man
+  set -l nv_home /data/user/kmeagher/opt/nvidia/Linux_x86_64/24.5/
+  set -l nv_dirs $nv_home/cuda/12.4 /usr/local/cuda
+  for dir in $nv_dirs
+    if [ -x $dir/bin/nvcc ]
+      set -xp PATH $dir/bin
+      break
+    end
   end
-
+  
   if command -q brew
     set -x HOMEBREW_PREFIX (brew --prefix)
     set -x HOMEBREW_CELLAR (brew --cellar)
@@ -94,6 +100,14 @@ if status is-interactive
     alias hd='hexyl --border none'
   end
 
+  if command -q fdfind
+    alias fd='fdfind'
+  end
+
+  if command -q batcat
+    alias bat='batcat'
+  end
+
   alias dfs='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
   alias nvsmi='nvidia-smi --query-gpu=temperature.gpu,utilization.gpu,utilization.memory,memory.total,memory.free,memory.used'
 
@@ -103,49 +117,49 @@ if status is-interactive
   if command -q uvx
     uvx --generate-shell-completion fish | source
   end
-  
-end # is-interactive
-   
-if set -q UV_PYTHON
-  set _pyver (echo $UV_PYTHON | tr -d '.')
-else
-  set _pyver (python3 -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
-end
 
-if set -q I3_SRC
-  if test -d $I3_SRC/.venv
-    echo found venv in I3_SRC
-    set _venvdir $I3_SRC/.venv
-  else if test -d $HOME/.venvs/icetray-py$_pyver
-    echo Using central IceTray venv
-    set _venvdir $HOME/.venvs/icetray-py$_pyver
+  if set -q UV_PYTHON
+    set _pyver (echo $UV_PYTHON | tr -d '.')
   else
-    echo "Cant find venv dir for icetray with python $_pyver and $_i3pyexe"
+    set _pyver (python3 -c v="__import__('sys').version_info;print('%d%d'%(v.major,v.minor))")
   end
-else 
-  if set -q VIRTUAL_ENV
-    echo sticking with VIRTUAL_ENV: $VIRTUAL_ENV
-    set _venvdir $VIRTUAL_ENV
-  else if test -e $PWD/.venv/bin/activate.fish
-    set _venvdir $PWD/.venv
-  else if set -q VIRTUAL_ENV
+
+  if set -q I3_SRC
+    if test -d $I3_SRC/.venv
+      echo found venv in I3_SRC
+      set _venvdir $I3_SRC/.venv
+    else if test -d $HOME/.venvs/icetray-py$_pyver
+      echo Using central IceTray venv
+      set _venvdir $HOME/.venvs/icetray-py$_pyver
+    else
+      echo "Cant find venv dir for icetray with python $_pyver and $_i3pyexe"
+    end
+  else 
+    if set -q VIRTUAL_ENV
       echo sticking with VIRTUAL_ENV: $VIRTUAL_ENV
-  else if test -e $HOME/.venvs/py$pyver/bin/activate.fish
-    set _venvdir $HOME/.venvs/py$_pyver
-  else
-    echo No Suitable venv found
+      set _venvdir $VIRTUAL_ENV
+    else if test -e $PWD/.venv/bin/activate.fish
+      set _venvdir $PWD/.venv
+    else if set -q VIRTUAL_ENV
+      echo sticking with VIRTUAL_ENV: $VIRTUAL_ENV
+    else if test -e $HOME/.venvs/py$pyver/bin/activate.fish
+      set _venvdir $HOME/.venvs/py$_pyver
+    else
+      echo No Suitable venv found
+    end
   end
-end
 
-if set -q _venvdir
-  echo Sourceing venv: $_venvdir/bin/activate.fish
-  source $_venvdir/bin/activate.fish
-end
+  if set -q _venvdir
+    echo Sourceing venv: $_venvdir/bin/activate.fish
+    source $_venvdir/bin/activate.fish
+  end
 
-if set -q I3_BUILD
-  set -xp PATH $I3_BUILD/bin
-end
-  
-if test -n $MANPATH[1]
-  set -xp MANPATH ""
-end
+  if set -q I3_BUILD
+    set -xp PATH $I3_BUILD/bin
+  end
+      
+  if test -n $MANPATH[1]
+    set -xp MANPATH ""
+  end
+
+end # is-interactive
